@@ -1,3 +1,6 @@
+//DO NOT USE
+//NOT GDX CONFIG
+
 package axisandallies;
 
 public class Territory

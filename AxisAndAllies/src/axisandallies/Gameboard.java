@@ -1,5 +1,6 @@
 package axisandallies;
 
+//DO NOT USE. NOT GDX CONFIG
 public class Gameboard
 {
    
