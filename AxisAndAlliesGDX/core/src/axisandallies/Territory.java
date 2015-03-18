@@ -5,10 +5,6 @@
  */
 package axisandallies;
 
-/**
- *
- * @author Eric Hardwick
- */
 public class Territory{
     String territoryName;
     String[] connections;
