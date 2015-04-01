@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package axisandallies;
-
+import java.util.*;
 
 public class Faction{
    private static final int MAX_RESEARCH = 6;
@@ -16,6 +16,7 @@ public class Faction{
    private static final int DEFAULT_FACTION = -1;
    private static final int DEFAULT_PLAYERID = -1;
    private int faction, playerID, playerBank, income;
+   private Random rand = new Random();
    private boolean[] research = new boolean[MAX_RESEARCH];
    
    public Faction()
@@ -106,3 +107,30 @@ public class Faction{
       else
          return false;
    }
+	
+	public boolean rollResearch(int amtWager, int researchAttempted)
+	{
+		int numDie;
+		int roll;
+
+		if(amtWager % 5 != 0 || amtWager < 5)
+		{
+			System.out.println("Each die costs 5 IPCs. Must spend a multiple of 5 for research.");
+			return false;
+		}
+		else
+		{
+			numDie = amtWager % 5;
+			for(int i = 0; i < numDie; i++)
+			{
+				roll = rand.nextInt(MAX_RESEARCH);
+				if(roll == researchAttempted){
+					setResearch(researchAttempted);
+					System.out.println("Research complete!");
+				}
+				
+			}
+			return true;
+		}
+	}
+}
