@@ -18,7 +18,7 @@ public class LandTerritory extends Territory{
    private int[] bomber = new int[MAX_FACTION];
    
    //TODO: Constructors
-   public Territory()
+   public Territory(String name, int faction, int value)
    {
       
    }
