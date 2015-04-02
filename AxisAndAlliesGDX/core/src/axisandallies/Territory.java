@@ -33,6 +33,16 @@ public class Territory{
     private String[] connections;
 
 	//TODO: Constructors
+	public Territory(){
+		setName("");
+		setFaction(0);
+		setValue(0);
+		setIsLand(false);
+		setIsNeutral(false);
+		setCapital(false);
+		setVictory(false);
+	}
+	
 	public Territory(String name, int faction, int value, boolean territoryType, boolean isNeutral, boolean isCapital, boolean isVictory)
 	{
 		if(!setName(name))
