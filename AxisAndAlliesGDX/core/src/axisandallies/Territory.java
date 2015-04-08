@@ -166,6 +166,10 @@ public class Territory{
    {
       return this.connectionsNumber;
    }
+   public String[] getConnections()
+   {
+      return this.connections;
+   }
    public boolean getIsConnected(String territory)
    {
       int i = this.getConnectionsNumber();
