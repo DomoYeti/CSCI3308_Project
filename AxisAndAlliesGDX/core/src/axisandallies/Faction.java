@@ -1,7 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * This is the Faction sub class
+ * The class tracks the income, research, saved bank, and whether or not the faction has been defeated
+ * Available factions: 0 - Russia, 1 - Germany, 2 - UK, 3 - Japan, 4 - US
  */
 package axisandallies;
 import java.util.*;
