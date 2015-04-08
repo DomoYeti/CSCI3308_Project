@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package axisandallies;
 
 public class Territory{
@@ -24,13 +19,20 @@ public class Territory{
 	private static final int MIN_VALUE = 0;
 	private int faction, value;
 	private String name;
-	private boolean isCapital, isVictory, hasIC, hasAA, isLand, isNeutral;
+	private boolean isCapital, isVictory, hasIndustrialComplex, 
+	   hasAntiAircraft, isLand, isNeutral;
 	private int[] infantry = new int[MAX_FACTION];
 	private int[] artillery = new int[MAX_FACTION];
 	private int[] tank = new int[MAX_FACTION];
 	private int[] fighter = new int[MAX_FACTION];
 	private int[] bomber = new int[MAX_FACTION];
-    private String[] connections;
+	private int[] battleship = new int[MAX_FACTION];
+	private int[] aircraftCarrier = new int[MAX_FACTION];
+	private int[] transport = new int[MAX_FACTION];
+	private int[] submarine = new int[MAX_FACTION];
+	private int[] destroyer = new int[MAX_FACTION];
+	
+   private String[] connections;
 
 	//TODO: Constructors
 	public Territory(){
@@ -41,9 +43,18 @@ public class Territory{
 		setIsNeutral(false);
 		setCapital(false);
 		setVictory(false);
+		setBattleship(0,0);
+		setAircraftCarrier(0,0);
+		setTransport(0,0);
+		setSubmarine(0,0);
+		setDestroyer(0,0);
 	}
 	
-	public Territory(String name, int faction, int value, boolean territoryType, boolean isNeutral, boolean isCapital, boolean isVictory)
+	public Territory(String name, int faction, int value, boolean landTerritory, 
+	      boolean isNeutral, boolean isCapital, boolean isVictory,
+	      int infantry, int artillery, int tank, int fighter, int bomber,
+	      int battleship, int aircraftCarrier, int transport, int submarine, 
+	      int destroyer, boolean antiaircraftGun, boolean industrialComplex)
 	{
 		if(!setName(name))
 			System.out.println("Could not set territory name");
@@ -51,14 +62,26 @@ public class Territory{
 			System.out.println("Invalid faction");
 		if(!setValue(value))
 			System.out.println("Invalid value");
-		if(!setIsLand(territoryType))
+		if(!setIsLand(landTerritory))
 			System.out.println("Invalid type");
 		if(!setIsNeutral(isNeutral))
 			System.out.println("Set neutral error");
 		if(!setCapital(isCapital))
 			System.out.println("Set capital error");
-		if(!setCapital(isVictory))
+		if(!setVictory(isVictory))
 			System.out.println("Set victory error");
+		setInfantry(faction, infantry);
+		setArtillery(faction, artillery);
+		setTank(faction, tank);
+		setFighter(faction, fighter);
+		setBomber(faction, bomber);
+		setBattleship(faction, battleship);
+		setAircraftCarrier(faction, aircraftCarrier);
+		setTransport(faction, transport);
+		setSubmarine(faction, submarine);
+		setDestroyer(faction, destroyer);
+		setAntiAircraft(antiaircraftGun);
+		setIndustrialComplex(industrialComplex);
 	}
 
    //Accessors
@@ -82,13 +105,13 @@ public class Territory{
    {
       return this.isVictory;
    }
-   public boolean getIC()
+   public boolean getIndustrialComplex()
    {
-      return this.hasIC;
+      return this.hasIndustrialComplex;
    }
-   public boolean getAA()
+   public boolean getAntiAircraft()
    {
-      return this.hasAA;
+      return this.hasAntiAircraft;
    }
    public int[] getInfantry()
    {
@@ -109,6 +132,26 @@ public class Territory{
    public int[] getBomber()
    {
       return this.bomber;
+   }
+   public int[] getBattleship()
+   {
+      return this.battleship;
+   }
+   public int[] getAircraftCarrier()
+   {
+      return this.aircraftCarrier;
+   }
+   public int[] getTransport()
+   {
+      return this.transport;
+   }
+   public int[] getSubmarine()
+   {
+      return this.submarine;
+   }
+   public int[] getDestroyer()
+   {
+      return this.destroyer;
    }
 	public boolean getIsLand()
 	{
@@ -155,85 +198,167 @@ public class Territory{
       this.isVictory = vic;
       return true;
    }
-   public boolean setIC(boolean IC)
+   public boolean setIndustrialComplex(boolean IC)
    {
-      //Cannot build an IC if one exists
-      if(this.hasIC == true)
+      //Cannot build IC on sea territory
+      if(this.getIsLand())
       {
-         return false;
+         //Cannot build an IC if one exists
+         if(this.hasIndustrialComplex == true)
+         {
+            return false;
+         }
+         else
+         {
+            this.hasIndustrialComplex = true;
+            return true;
+         }
       }
       else
       {
-         this.hasIC = true;
-         return true;
+         return false;
       }
    }
-   public boolean setAA(boolean AA)
+   public boolean setAntiAircraft(boolean AA)
    {
-      if(this.hasAA == true)
+      if(this.getIsLand())
       {
-         return false;
+         //Cannot build AntiAircraft if one exists
+         if(this.hasAntiAircraft == true)
+         {
+            return false;
+         }
+         else
+         {
+            this.hasAntiAircraft = true;
+            return true;
+         }
       }
       else
       {
-         this.hasAA = true;
-         return true;
+         return false;
       }
    }
    public boolean setInfantry(int factionPos, int count)
    {
-      if(factionPos >= Territory.MIN_VALUE && factionPos <= Territory.MAX_FACTION
-            && count >= Territory.MIN_VALUE)
+      if(this.setLandUnitParamterTest(factionPos, count))
       {
          this.infantry[factionPos] = count;
          return true;
       }
       else
+      {
          return false;
+      }
+         
    }
    public boolean setArtillery(int factionPos, int count)
    {
-      if(factionPos >= Territory.MIN_VALUE && factionPos <= Territory.MAX_FACTION
-            && count >= Territory.MIN_VALUE)
+      if(this.setLandUnitParamterTest(factionPos, count))
       {
          this.artillery[factionPos] = count;
          return true;
       }
       else
+      {
          return false;
+      }
    }
    public boolean setTank(int factionPos, int count)
    {
-      if(factionPos >= Territory.MIN_VALUE && factionPos <= Territory.MAX_FACTION
-            && count >= Territory.MIN_VALUE)
+      if(this.setLandUnitParamterTest(factionPos, count))
       {
          this.tank[factionPos] = count;
          return true;
       }
       else
+      {
          return false;
+      }
    }
    public boolean setFighter(int factionPos, int count)
    {
-      if(factionPos >= Territory.MIN_VALUE && factionPos <= Territory.MAX_FACTION
-            && count >= Territory.MIN_VALUE)
+      if(this.setLandUnitParamterTest(factionPos, count))
       {
          this.fighter[factionPos] = count;
          return true;
       }
       else
+      {
          return false;
+      }
    }
    public boolean setBomber(int factionPos, int count)
    {
-      if(factionPos >= Territory.MIN_VALUE && factionPos <= Territory.MAX_FACTION
-            && count >= Territory.MIN_VALUE)
+      if(this.setLandUnitParamterTest(factionPos, count))
       {
          this.bomber[factionPos] = count;
          return true;
       }
       else
+      {
          return false;
+      }
+   }
+   public boolean setBattleship(int factionPos, int count)
+   {
+      if(this.setSeaUnitParameterTest(factionPos, count))
+      {
+         this.battleship[factionPos] = count;
+         return true;
+      }
+      else
+      {
+         return false;
+      }
+   }
+   public boolean setAircraftCarrier(int factionPos, int count)
+   {
+      if(this.setSeaUnitParameterTest(factionPos, count))
+      {
+         this.aircraftCarrier[factionPos] = count;
+         return true;
+      }
+      else
+      {
+         return false;
+      }
+   }  
+   public boolean setTransport(int factionPos, int count)
+   {
+      if(this.setSeaUnitParameterTest(factionPos, count))
+      {
+         this.transport[factionPos] = count;
+         return true;
+      }
+      else
+      {
+         return false;
+      }
+   }
+   public boolean setSubmarine(int factionPos, int count)
+   {
+      if(this.setSeaUnitParameterTest(factionPos, count))
+      {
+         this.submarine[factionPos] = count;
+         return true;
+      }
+      else
+      {
+         return false;
+      }
+   }
+   public boolean setDestroyer(int factionPos, int count)
+   {
+      if(this.setSeaUnitParameterTest(factionPos, count))
+      {
+         this.destroyer[factionPos] = count;
+         return true;
+      }
+      else
+      {
+         return false;
+      }
    }
 	public boolean setIsLand(boolean isLand)
 	{
@@ -245,4 +370,49 @@ public class Territory{
 		this.isNeutral = isNeutral;
 		return true;
 	}
+	public boolean setLandUnitParamterTest(int factionPos, int count)
+	{
+	   if(this.getIsLand())
+      {
+         if(factionPos >= Territory.MIN_VALUE && factionPos <= Territory.MAX_FACTION
+               && count >= Territory.MIN_VALUE)
+         {
+            return true;
+         }
+         else
+            return false;
+      }
+      else
+      {
+         return false;
+      }
+	}
+   public boolean setSeaUnitParameterTest(int factionPos, int count)
+   {
+      if(!this.getIsLand())
+      {
+         if(factionPos >= Territory.MIN_VALUE && factionPos <= Territory.MAX_FACTION
+               && count >= Territory.MIN_VALUE)
+         {
+            return true;
+         }
+         else
+            return false;
+      }
+      else
+      {
+         return false;
+      }
+   }
+   public boolean updateLandUnits(int factionPos, int infantryCount, 
+         int artilleryCount, int tankCount, int fighterCount, int bomberCount)
+   {
+      return true;
+   }
+   public boolean updateSeaUnits(int factionPos, int battleshipCount,
+         int aircraftCarrierCount, int transportCount, 
+         int submarineCount, int destroyerCount)
+   {
+      return true;
+   }
 }
