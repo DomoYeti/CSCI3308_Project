@@ -18,6 +18,7 @@ public class Faction{
    private int faction, playerID, playerBank, income;
    private Random rand = new Random();
    private boolean[] research = new boolean[MAX_RESEARCH];
+   private boolean isDefeated = false;
    
    public Faction()
    {
@@ -133,4 +134,10 @@ public class Faction{
 			return true;
 		}
 	}
+        
+   public boolean setIsDefeated(boolean isDefeated)
+   {
+      this.isDefeated = true;
+      return true;
+   }
 }
