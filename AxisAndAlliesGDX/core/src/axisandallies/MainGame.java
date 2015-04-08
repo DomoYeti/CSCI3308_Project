@@ -190,6 +190,37 @@ public class MainGame /*extends ApplicationAdapter*/ {
             false, false, false, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false);
       territoryList[142] = new Territory("Mexico", 4, 2, true, false, 
             false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false);
+
+	  //Init sea territories
+      //Format: Battleship, aircraft carrier, transport, submarine, destroyer
+      //Soviet Union
+      territoryList[4].updateSeaUnits(0, 0, 0, 0, 1, 0);
+      
+      //Germany
+      territoryList[5].updateSeaUnits(1, 0, 0, 1, 2, 1);
+      territoryList[8].updateSeaUnits(1, 0, 0, 0, 1, 0);
+      territoryList[14].updateSeaUnits(1, 1, 0, 1, 0, 0);
+      
+      //United Kingdom
+      territoryList[2].updateSeaUnits(2, 1, 0, 1, 0, 0);
+      territoryList[1].updateSeaUnits(2, 0, 0, 1, 0, 0);
+      territoryList[40].updateSeaUnits(2, 0, 0, 1, 1, 0);
+      territoryList[35].updateSeaUnits(2, 0, 1, 1, 0, 1);
+      territoryList[15].updateSeaUnits(2, 0, 0, 0, 0, 1);
+      territoryList[13].updateSeaUnits(2, 1, 0, 0, 0, 0);
+      
+      //Japan
+      territoryList[60].updateSeaUnits(3, 1, 0, 1, 0, 0);
+      territoryList[59].updateSeaUnits(3, 0, 0, 1, 0, 0);
+      territoryList[37].updateSeaUnits(3, 1, 1, 0, 0, 0);
+      territoryList[50].updateSeaUnits(3, 0, 1, 0, 0, 1);
+      territoryList[45].updateSeaUnits(3, 0, 0, 0, 1, 0);
+      
+      //United States
+      territoryList[55].updateSeaUnits(4, 1, 0, 1, 0, 0);
+      territoryList[10].updateSeaUnits(4, 0, 0, 2, 0, 1);
+      territoryList[20].updateSeaUnits(4, 0, 0, 0, 0, 1);
+      territoryList[52].updateSeaUnits(4, 0, 1, 0, 1, 0);
    }
       
 

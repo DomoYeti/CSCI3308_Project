@@ -408,7 +408,7 @@ public class Territory{
    }
         
         
-        //Helper Functions
+    //Helper Functions
 	public boolean setLandUnitParamterTest(int factionPos, int count)
 	{
 	   if(this.getIsLand())
@@ -446,12 +446,28 @@ public class Territory{
    public boolean updateLandUnits(int factionPos, int infantryCount, 
          int artilleryCount, int tankCount, int fighterCount, int bomberCount)
    {
-      return true;
+      boolean success = true;
+      
+      if(!setInfantry(factionPos, infantryCount)){ success = false; }
+      if(!setArtillery(factionPos, artilleryCount)){ success = false; }
+      if(!setTank(factionPos, tankCount)){ success = false; }
+      if(!setFighter(factionPos, fighterCount)){ success = false; }
+      if(!setBomber(factionPos, bomberCount)){ success = false; }
+      
+      return success;
    }
    public boolean updateSeaUnits(int factionPos, int battleshipCount,
          int aircraftCarrierCount, int transportCount, 
          int submarineCount, int destroyerCount)
    {
-      return true;
+      boolean success = true;
+      
+      if(!setBattleship(factionPos, battleshipCount)){ success = false; }
+      if(!setAircraftCarrier(factionPos, aircraftCarrierCount)){ success = false; }
+      if(!setTransport(factionPos, transportCount)){ success = false; }
+      if(!setSubmarine(factionPos, submarineCount)){ success = false; }
+      if(!setDestroyer(factionPos, destroyerCount)){ success = false; }
+      
+      return success;
    }
 }
