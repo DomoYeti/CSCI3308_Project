@@ -35,29 +35,37 @@ public class Faction{
    }
    
    
-   //Accessors
+   //gets the faction ID
    public int getFaction()
    {
       return this.faction;
    }
+   
+   //retrieves the ID for the player controlling the faction
    public int getPlayerID()
    {
       return this.playerID;
    }
+   
+   //retrieves the faction's saved bank
    public int getPlayerBank()
    {
       return this.playerBank;
    }
+   
+   //retrieves the single turn income of a faction
    public int getIncome()
    {
       return this.income;
    }
+   
+   //returns an array of boolean values pertaining to which research the faction has done
    public boolean[] getResearch()
    {
       return this.research;
    }
    
-   //Mutators
+   //sets the faction being played to newFaction
    public boolean setFaction(int newFaction)
    {
       if(newFaction >= Faction.MIN_FACTION && newFaction <= Faction.MAX_FACTION)
@@ -68,6 +76,8 @@ public class Faction{
       else
          return false;
    }
+   
+   //sets the unique player ID for the faction to newPlayerID
    public boolean setPlayerID(int newPlayerID)
    {
       if(newPlayerID > 0)
@@ -78,6 +88,8 @@ public class Faction{
       else
          return false;
    }
+   
+   //sets the bank of the faction to newBank
    public boolean setPlayerBank(int newBank)
    {
       if(newBank >= Faction.MIN_BANK)
@@ -88,6 +100,8 @@ public class Faction{
       else
          return false;
    }
+   
+   //sets the faction single turn income to newIncome
    public boolean setIncome(int newIncome)
    {
       if(newIncome >= Faction.MIN_INCOME && newIncome <= Faction.MAX_INCOME)
@@ -98,6 +112,8 @@ public class Faction{
       else
          return false;
    }
+   
+   //sets the faction's research array to researchPos
    public boolean setResearch(int researchPos)
    {
       if(researchPos >= 0 && researchPos < Faction.MAX_RESEARCH)
@@ -108,6 +124,8 @@ public class Faction{
       else
          return false;
    }
+   
+   //sets a factions defeat status to true
    public boolean setIsDefeated(boolean isDefeated)
    {
       this.isDefeated = true;
