@@ -32,6 +32,7 @@ public class Territory{
 	private int[] submarine = new int[MAX_FACTION];
 	private int[] destroyer = new int[MAX_FACTION];
 	
+   private int connectionsNumber = 0;
    private String[] connections;
 
 	//TODO: Constructors
@@ -161,6 +162,22 @@ public class Territory{
 	{
 		return this.isNeutral;
 	}
+   public int getConnectionsNumber()
+   {
+      return this.connectionsNumber;
+   }
+   public boolean getIsConnected(String territory)
+   {
+      int i = this.getConnectionsNumber();
+      for(int j = 0; j<i; j++)
+      {
+         if(territory.equals(this.connections[j]))
+         {
+             return true;
+         }
+      }
+      return false;
+   }
    
    //Mutators
    public boolean setFaction(int newFaction)
@@ -370,6 +387,24 @@ public class Territory{
 		this.isNeutral = isNeutral;
 		return true;
 	}
+   public boolean setNewConnection(String territory)
+   {
+      if(this.getIsConnected(territory)) return false;
+      String[] oldList = this.connections;
+      int i = this.connectionsNumber;
+      String[] newList = new String[i];
+      for(int j = 0; j<i; j++)
+      {
+         newList[j] = oldList[j];
+      }
+      newList[i] = territory;
+      this.connections = newList;
+      this.connectionsNumber = i + 1;
+      return true;
+   }
+        
+        
+        //Helper Functions
 	public boolean setLandUnitParamterTest(int factionPos, int count)
 	{
 	   if(this.getIsLand())

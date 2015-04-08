@@ -108,7 +108,13 @@ public class Faction{
       else
          return false;
    }
-	
+   public boolean setIsDefeated(boolean isDefeated)
+   {
+      this.isDefeated = true;
+      return true;
+   }
+   
+        //Functions
 	public boolean rollResearch(int amtWager, int researchAttempted)
 	{
 		int numDie;
@@ -135,9 +141,4 @@ public class Faction{
 		}
 	}
         
-   public boolean setIsDefeated(boolean isDefeated)
-   {
-      this.isDefeated = true;
-      return true;
-   }
 }
