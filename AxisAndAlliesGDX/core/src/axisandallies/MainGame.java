@@ -222,6 +222,30 @@ public class MainGame /*extends ApplicationAdapter*/ {
       territoryList[20].updateSeaUnits(4, 0, 0, 0, 0, 1);
       territoryList[52].updateSeaUnits(4, 0, 1, 0, 1, 0);
    }
+   
+   
+   public void main(){
+       initialize();
+       short victory = 0;
+       short currentPlayer = 1;
+       
+       while(victory == 0){
+           
+           if(currentPlayer == 6)
+               for(int i=1; i<6; i++){
+                   //faction[i].victory = victory;
+                   i = 1;
+               }
+           //developWeapons()
+           //purchaseUnits()
+           //combat()
+           //move()
+           //mobilizeNewUnits()
+           //collectIncome()
+           
+           currentPlayer++;
+       }
+   }
       
 
    /*
