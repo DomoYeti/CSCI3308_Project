@@ -11,12 +11,12 @@ public class Territory{
 	//Neutral: 16
 	//Total Land: 79 
 
-	private static final int LAND_COUNT = 78;
-	private static final int SEA_COUNT = 64;
-	private static final int NEUTRAL_COUNT = 16;
-	private static final int TERRITORY_COUNT = 158;
-	private static final int MAX_FACTION = 4;
-	private static final int MIN_VALUE = 0;
+	//private static final int LAND_COUNT = 78;
+	//private static final int SEA_COUNT = 64;
+	//private static final int NEUTRAL_COUNT = 16;
+	//private static final int TERRITORY_COUNT = 158;
+	public static final int MAX_FACTION = 5;
+	public static final int MIN_VALUE = 0;
 	private int faction, value;
 	private String name;
 	private boolean isCapital, isVictory, hasIndustrialComplex, 
@@ -231,7 +231,7 @@ public class Territory{
          }
          else
          {
-            this.hasIndustrialComplex = true;
+            this.hasIndustrialComplex = IC;
             return true;
          }
       }
@@ -251,7 +251,7 @@ public class Territory{
          }
          else
          {
-            this.hasAntiAircraft = true;
+            this.hasAntiAircraft = AA;
             return true;
          }
       }
