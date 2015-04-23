@@ -1,20 +1,7 @@
 package axisandallies;
 
 public class Territory{
-	//Count of sea territories = 64
-	//Count of land territories:
-	//US: 13
-	//UK: 17
-	//Germany: 11
-	//Russia: 10
-	//Japan: 12
-	//Neutral: 16
-	//Total Land: 79 
 
-	//private static final int LAND_COUNT = 78;
-	//private static final int SEA_COUNT = 64;
-	//private static final int NEUTRAL_COUNT = 16;
-	//private static final int TERRITORY_COUNT = 158;
 	public static final int MAX_FACTION = 5;
 	public static final int MIN_VALUE = 0;
 	private int faction, value;
@@ -35,7 +22,6 @@ public class Territory{
    private int connectionsNumber = 0;
    private String[] connections;
 
-	//TODO: Constructors
 	public Territory(){
 		setName("");
 		setFaction(0);
@@ -50,7 +36,14 @@ public class Territory{
 		setSubmarine(0,0);
 		setDestroyer(0,0);
 	}
-	
+	/**
+	 * Territory constructor.
+	 * Format: Name, faction, territory value, land or sea, neutral or playable,
+	 * has a capital city, has a victory city, number of the following units:
+	 * infantry, artillery, tank, fighter, bomber, battleship, aircraft carrier,
+	 * transport, submarine, destroyer, has an anti aircraft gun,
+	 * has an industrial complex
+	 */
 	public Territory(String name, int faction, int value, boolean landTerritory, 
 	      boolean isNeutral, boolean isCapital, boolean isVictory,
 	      int infantry, int artillery, int tank, int fighter, int bomber,
@@ -391,6 +384,12 @@ public class Territory{
 		this.isNeutral = isNeutral;
 		return true;
 	}
+	
+	/**
+	 * List of the number of connecting territories to the current territory
+	 * @param territory the name of the territory to set connections
+	 * @return boolean to indicate that the connections were set correctly
+	 */
    public boolean setNewConnection(String territory)
    {
       if(this.getIsConnected(territory)) return false;
@@ -407,25 +406,38 @@ public class Territory{
       return true;
    }
         
-        
-    //Helper Functions
-    public boolean setLandUnitParamterTest(int factionPos, int count)
-    {
-        if(this.getIsLand())
-        {
-            if(factionPos >= Territory.MIN_VALUE && factionPos <=
-            Territory.MAX_FACTION && count >= Territory.MIN_VALUE)
-            {
-                return true;
-            }
-            else
-                return false;
-        }
-        else
-        {
+   /**
+    * Helper function to test valid parameters for updating the number of
+    * land units in a territory
+    * @param factionPos the faction that owns the units to be updated
+    * @param count the number of units remaining in the territory
+    * @return boolean whether the update was successful or not
+    */
+	public boolean setLandUnitParamterTest(int factionPos, int count)
+	{
+	   if(this.getIsLand())
+      {
+         if(factionPos >= Territory.MIN_VALUE && factionPos <= Territory.MAX_FACTION
+               && count >= Territory.MIN_VALUE)
+         {
+            return true;
+         }
+         else
             return false;
-        }
-    }
+      }
+      else
+      {
+         return false;
+      }
+	}
+	
+   /**
+    * Helper function to test valid parameters for updating the number of
+    * sea units in a territory
+    * @param factionPos the faction that owns the units to be updated
+    * @param count the number of units remaining in the territory
+    * @return boolean whether the update was successful or not
+    */
    public boolean setSeaUnitParameterTest(int factionPos, int count)
    {
       if(!this.getIsLand())
@@ -443,6 +455,16 @@ public class Territory{
          return false;
       }
    }
+   /**
+    * Update land units of all types in a single territory
+    * @param factionPos the faction owner of the units to be updated
+    * @param infantryCount the number of infantry remaining
+    * @param artilleryCount the number of artillery remaining
+    * @param tankCount the number of tanks remaining
+    * @param fighterCount the number of fighters remaining
+    * @param bomberCount the number of bombers remaining
+    * @return boolean to indicate whether update was successful or not
+    */
    public boolean updateLandUnits(int factionPos, int infantryCount, 
          int artilleryCount, int tankCount, int fighterCount, int bomberCount)
    {
@@ -456,6 +478,16 @@ public class Territory{
       
       return success;
    }
+   /**
+    * Update sea units of all types in a single territory
+    * @param factionPos the faction owner of the units to be updated
+    * @param battleshipCount the number of battleships remaining
+    * @param aircraftCarrierCount the number of aircraft carriers remaining
+    * @param transportCount the number of transports remaining
+    * @param submarineCount the number of submarines remaining
+    * @param destroyerCount the number of destroyers remaining
+    * @return boolean to indicate whether update was successful or not
+    */
    public boolean updateSeaUnits(int factionPos, int battleshipCount,
          int aircraftCarrierCount, int transportCount, 
          int submarineCount, int destroyerCount)

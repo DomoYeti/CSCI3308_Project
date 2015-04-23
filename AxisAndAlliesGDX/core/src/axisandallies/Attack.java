@@ -4,7 +4,6 @@
  * All set functions are tuples of the form (attacker,defender)
  */
 package axisandallies;
-import static axisandallies.Territory.MAX_FACTION;
 import java.util.*;
 
 /**
@@ -56,12 +55,6 @@ public class Attack {
             int aSubmarine, int dSubmarine, int aDestroyer, int dDestroyer,
             boolean antiaircraftGun)
     {
-	if(!setFaction(faction))
-		System.out.println("Invalid faction");
-	if(!setInstance(instance))
-		System.out.println("Invalid instance");
-	if(!setIsLand(landTerritory))
-		System.out.println("Invalid type");
 	setInfantry(aInfantry, dInfantry);
 	setArtillery(aArtillery, dArtillery);
 	setTank(aTank, dTank);

@@ -1,15 +1,15 @@
-package axisandallies;
+/** 
+ * MainGame runs the application and makes calls to each game phase
+ * @version 0.3
+ * 
+ */
 
-//import com.badlogic.gdx.ApplicationAdapter;
-//import com.badlogic.gdx.Gdx;
-//import com.badlogic.gdx.graphics.GL20;
-//import com.badlogic.gdx.graphics.Texture;
-//import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+package axisandallies;
 import java.util.*;
 
 public class MainGame /*extends ApplicationAdapter*/ {
 
-   //158 Territories plus a deployment territory
+   //142 Territories plus a deployment territory
    final static int MAX_TERRITORIES = 143;
    final static int WATER_TERRITORY_COUNT = 64;
    final static int MAX_RESEARCH = 7;
@@ -22,7 +22,6 @@ public class MainGame /*extends ApplicationAdapter*/ {
    
    private static Scanner input;
    
-
    public static void main(String[] args){
        
       initializePlayers();
@@ -49,6 +48,11 @@ public class MainGame /*extends ApplicationAdapter*/ {
       }
    }
    
+   /**
+    * Initialize the factions with starting values.
+    * Initialize number of players in the game.
+    * Assign players to teams.
+    */
    public static void initializePlayers()
    {
       input = new Scanner(System.in); //reads input from console
@@ -115,6 +119,10 @@ public class MainGame /*extends ApplicationAdapter*/ {
 
    }
    
+   /**
+    * Menu output to display teams based on the number of players.
+    * @param numberOfPlayers the number of players in the game.
+    */
    public static void playerSelectMenu(int numberOfPlayers)
    {
       System.out.println("Enter the number to select your country:");
@@ -149,6 +157,12 @@ public class MainGame /*extends ApplicationAdapter*/ {
       }
    }   
    
+   /**
+    * Assign the player to a faction
+    * @param numPlayers the number of players in the game.
+    * @param userChoice the team the user has selected to play.
+    * @param playerNumber the player number of the current user
+    */
    public static void assignPlayerToFaction(int numPlayers, int userChoice,
          int playerNumber)
    {
@@ -228,6 +242,7 @@ public class MainGame /*extends ApplicationAdapter*/ {
       }
    }
    
+   //Helper function to determine if a faction is allied with a current faction
    public static boolean allyFaction(int currentFaction, int otherFaction){
        if(currentFaction == otherFaction) return true;
        else if(currentFaction == 0 & (otherFaction == 2 | otherFaction == 4)) return true;
@@ -238,6 +253,13 @@ public class MainGame /*extends ApplicationAdapter*/ {
        else return false;
    }
    
+   /**
+    * Phase 1: Select research to develop this turn
+    * Require user to select option to research (or none).
+    * Require user to enter the number of dice to purchase.
+    * Roll for research, then complete the phase.
+    * @param currentPlayer the current player whose turn it is.
+    */
    public static void developWeapons(int currentPlayer)
    {
       input = new Scanner(System.in); //reads input from console
@@ -250,6 +272,7 @@ public class MainGame /*extends ApplicationAdapter*/ {
       
       do
       {
+         //Validate the user entered input within range 1 to 7
          while(!valid)
          {
             selectResearchComplete = false;
@@ -264,13 +287,15 @@ public class MainGame /*extends ApplicationAdapter*/ {
             {
                System.out.println("Enter a number from 1 to 7.");
             }
-            
+            //Exit all loops and complete phase if choice 7 is selected
             if(researchAttempted == 7)
             {
                selectResearchComplete = true;
                rollForResearchComplete = true;
             }
          }
+         //Enter number of dice and call roll research method
+         //Validation handled within roll research.
          while(!selectResearchComplete)
          {
             researchMenu(menuPage, currentPlayer);
@@ -292,7 +317,11 @@ public class MainGame /*extends ApplicationAdapter*/ {
          }
       }while(!rollForResearchComplete || !selectResearchComplete);
    }
-   
+   /**
+    * Output menu options for the research phase
+    * @param menuPage the page to be displayed.
+    * @param currentPlayer the current player whose turn it is.
+    */
    public static void researchMenu(int menuPage, int currentPlayer)
    {
       switch(menuPage)
@@ -369,9 +398,10 @@ public class MainGame /*extends ApplicationAdapter*/ {
        //Combat Resolution phase
    }
    
-
-   //List of initial territories and their default values
-   //Board set up initialization
+   /**
+    * Initialize all territories to their default values and owners
+    * Initialization according to 2004 Revised Edition Ruleset
+    */
    public static void initializeTerritories()
    {
       int i;
@@ -577,7 +607,9 @@ public class MainGame /*extends ApplicationAdapter*/ {
       territoryList[20].updateSeaUnits(4, 0, 0, 0, 0, 1);
       territoryList[52].updateSeaUnits(4, 0, 1, 0, 1, 0);
    }      
-   
+   /**
+    * Helper function to print all territory names
+    */
    public static void printTerrs()
    {
       for(int i = 0; i < MAX_TERRITORIES; i++)
@@ -595,22 +627,4 @@ public class MainGame /*extends ApplicationAdapter*/ {
       return null;
    }
 
-   /*
-   ***** Original main files *****
-   SpriteBatch batch;
-   Texture img;
-   
-   @Override
-   public void create () {
-      batch = new SpriteBatch();
-      img = new Texture("badlogic.jpg");
-   }
-   @Override
-   public void render () {
-      Gdx.gl.glClearColor(1, 0, 0, 1);
-      Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-      batch.begin();
-      batch.draw(img, 0, 0);
-      batch.end();
-   }*/
 }
