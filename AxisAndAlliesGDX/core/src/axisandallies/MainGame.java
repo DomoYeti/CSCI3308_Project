@@ -25,15 +25,15 @@ public class MainGame /*extends ApplicationAdapter*/ {
 
    public static void main(String[] args){
        
-       initializePlayers();
-       initializeTerritories();
-       //printTerrs();
-       short victory = 0;
-       int currentPlayer = 0;
+      initializePlayers();
+      initializeTerritories();
+      //printTerrs();
+      short victory = 0;
+      int currentPlayer = 0;
        
-       while(victory == 0){
+      while(victory == 0){
            
-           if(currentPlayer == 6)
+        if(currentPlayer == 6)
                for(int i=1; i<6; i++){
                    //faction[i].victory = victory;
                 i = 1;
@@ -46,7 +46,7 @@ public class MainGame /*extends ApplicationAdapter*/ {
         //collectIncome()
            
         currentPlayer = (currentPlayer + 1) % MAX_PLAYERS;
-       }
+      }
    }
    
    public static void initializePlayers()
@@ -228,6 +228,16 @@ public class MainGame /*extends ApplicationAdapter*/ {
       }
    }
    
+   public static boolean allyFaction(int currentFaction, int otherFaction){
+       if(currentFaction == otherFaction) return true;
+       else if(currentFaction == 0 & (otherFaction == 2 | otherFaction == 4)) return true;
+       else if(currentFaction == 1 & otherFaction == 3) return true;
+       else if(currentFaction == 2 & (otherFaction == 0 | otherFaction == 4)) return true;
+       else if(currentFaction == 3 & otherFaction == 1) return true;
+       else if(currentFaction == 4 & (otherFaction == 0 | otherFaction == 2)) return true;
+       else return false;
+   }
+   
    public static void developWeapons(int currentPlayer)
    {
       input = new Scanner(System.in); //reads input from console
@@ -308,6 +318,55 @@ public class MainGame /*extends ApplicationAdapter*/ {
         
       }
 
+   }
+   
+   public static void combatMoveAndCombat(int currentPlayer, int currentFaction){
+       Attack[] attackList = new Attack[MAX_TERRITORIES];
+       //Combat Move phase
+       boolean concluded = false;
+       while(concluded == false){
+           boolean done = false;
+           String attackerName;
+           String defenderName;
+           Territory attackingTerritory;
+           Territory defendingTerritory;
+           //read user input
+           while(done == false){
+               System.out.print("Enter the territory you would like to mobilize from: ");
+               attackerName = input.next( );
+               //check is territory
+               attackingTerritory = getTerritoryFromName(attackerName);
+               if(attackingTerritory == null){
+                   System.out.print("That is not a known territory.\n");
+                   return;
+               }
+               //check is owned
+               if(currentFaction != attackingTerritory.getFaction()){
+                   System.out.print("You do not control that territory!\n");
+                   return;
+               }
+           }
+           done = false;
+           //read user input
+           while(done == false){
+               System.out.print("Enter the territory you would like to attack: ");
+               defenderName = input.next( );
+               //check is territory
+               defendingTerritory = getTerritoryFromName(defenderName);
+               if(defendingTerritory == null){
+                   System.out.print("That is not a known territory.\n");
+                   return;
+               }
+               //check is enemy
+               if(allyFaction(currentFaction, defendingTerritory.getFaction())){
+                   System.out.print("That is an allied territory!\n");
+                   return;
+               }
+           }
+           done = false;
+       }
+       
+       //Combat Resolution phase
    }
    
 
@@ -523,8 +582,17 @@ public class MainGame /*extends ApplicationAdapter*/ {
    {
       for(int i = 0; i < MAX_TERRITORIES; i++)
       {
-         System.out.println("" + territoryList[i].getName());
+        System.out.println("" + territoryList[i].getName());
       }
+   }
+   
+   public static Territory getTerritoryFromName(String nameString)
+   {
+      for(int i = 0; i < MAX_TERRITORIES; i++)
+      {
+        if(territoryList[i].getName() == nameString) return territoryList[i];
+      }
+      return null;
    }
 
    /*

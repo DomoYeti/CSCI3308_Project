@@ -409,23 +409,23 @@ public class Territory{
         
         
     //Helper Functions
-	public boolean setLandUnitParamterTest(int factionPos, int count)
-	{
-	   if(this.getIsLand())
-      {
-         if(factionPos >= Territory.MIN_VALUE && factionPos <= Territory.MAX_FACTION
-               && count >= Territory.MIN_VALUE)
-         {
-            return true;
-         }
-         else
+    public boolean setLandUnitParamterTest(int factionPos, int count)
+    {
+        if(this.getIsLand())
+        {
+            if(factionPos >= Territory.MIN_VALUE && factionPos <=
+            Territory.MAX_FACTION && count >= Territory.MIN_VALUE)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+        else
+        {
             return false;
-      }
-      else
-      {
-         return false;
-      }
-	}
+        }
+    }
    public boolean setSeaUnitParameterTest(int factionPos, int count)
    {
       if(!this.getIsLand())
