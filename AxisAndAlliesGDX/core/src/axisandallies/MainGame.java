@@ -5,20 +5,316 @@ package axisandallies;
 //import com.badlogic.gdx.graphics.GL20;
 //import com.badlogic.gdx.graphics.Texture;
 //import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import java.util.*;
 
 public class MainGame /*extends ApplicationAdapter*/ {
 
    //158 Territories plus a deployment territory
-   final static int MAX_TERRITORIES = 144;
+   final static int MAX_TERRITORIES = 143;
    final static int WATER_TERRITORY_COUNT = 64;
-   //PlayerIDs
-   //Need to be updated
-   int playerID1 = 1, playerID2 = 2, playerID3 = 3, playerID4 = 4, playerID5 = 5;
-   Territory[] territoryList = new Territory[MAX_TERRITORIES];
+   final static int MAX_RESEARCH = 7;
+   final static int DEFAULT_MIN_VALUE = 0;
+   final static int MAX_PLAYERS = 5;
+   static Territory[] territoryList = new Territory[MAX_TERRITORIES];
+   static Faction[] factionList = new Faction[MAX_PLAYERS];
+   static int NUMBER_OF_PLAYERS = 0;
+   
+   
+   private static Scanner input;
+   
+
+   public static void main(String[] args){
+       
+       initializePlayers();
+       initializeTerritories();
+       //printTerrs();
+       short victory = 0;
+       int currentPlayer = 0;
+       
+       while(victory == 0){
+           
+           if(currentPlayer == 6)
+               for(int i=1; i<6; i++){
+                   //faction[i].victory = victory;
+                i = 1;
+            }
+        developWeapons(currentPlayer);
+        //purchaseUnits()
+        //combat()
+        //move()
+        //mobilizeNewUnits()
+        //collectIncome()
+           
+        currentPlayer = (currentPlayer + 1) % MAX_PLAYERS;
+       }
+   }
+   
+   public static void initializePlayers()
+   {
+      input = new Scanner(System.in); //reads input from console
+      boolean done = false;
+      boolean validInput = false;
+      boolean validCountry = false;
+      int numPlayers = 0;
+      boolean takenCountries[] = new boolean[] {false, false, false, false, false};
+      
+      //Initialize all countries
+      factionList[0] = new Faction(0, 0, 24, 24); //Russia
+      factionList[1] = new Faction(1, 0, 40, 40); //Germany
+      factionList[2] = new Faction(2, 0, 30, 30); //UK
+      factionList[3] = new Faction(3, 0, 30, 30); //Japan
+      factionList[4] = new Faction(4, 0, 42, 42); //US
+
+      do
+      {
+         System.out.println("Enter number of players (2 to 5):");
+         numPlayers = Integer.parseInt(input.nextLine());
+         
+         if(numPlayers >= 2 && numPlayers <= 5)
+         {
+            validInput = true;
+            NUMBER_OF_PLAYERS = numPlayers;
+         }
+         else
+         {
+            System.out.println("Number of players must be between 2 and 5.");
+         }
+      }while(!validInput && !validCountry);
+
+      for(int i = 1; i <= numPlayers; i++)
+      {
+         validCountry = false;
+         validInput = false;
+         System.out.println("Player " + i + ", your turn to choose!");
+         
+         do
+         {
+            playerSelectMenu(numPlayers);
+            int userSelection = Integer.parseInt(input.nextLine());
+            if(userSelection >= 1 && userSelection <= numPlayers)
+            {
+               validInput = true;
+            }
+            else
+            {
+               System.out.println("Choose a number corresponding to one of the options.");
+            }
+            if(takenCountries[userSelection-1] == false)
+            {
+               validCountry = true;
+               takenCountries[userSelection-1] = true;
+               assignPlayerToFaction(numPlayers, userSelection, i);
+            }
+            else
+            {
+               System.out.println("That team has already been selected! Choose another.");
+            }
+         }while(!validCountry || !validInput);
+      }
+      
+
+   }
+   
+   public static void playerSelectMenu(int numberOfPlayers)
+   {
+      System.out.println("Enter the number to select your country:");
+      switch(numberOfPlayers)
+      {
+         case 2:
+            System.out.println("1. Russia, United Kingdom, and the United States");
+            System.out.println("2. Germany, Japan");
+            break;
+         case 3:
+            System.out.println("1. Russia, United Kingdom, and the United States");
+            System.out.println("2. Germany");
+            System.out.println("3. Japan");
+            break;
+         case 4:
+            System.out.println("1. Russia, and the United States");
+            System.out.println("2. Germany");
+            System.out.println("3. United Kingdom");
+            System.out.println("4. Japan");
+            break;
+         case 5:
+            System.out.println("1. Russia");
+            System.out.println("2. Germany");
+            System.out.println("3. United Kingdom");
+            System.out.println("4. Japan");
+            System.out.println("5. United States");
+            break;
+            
+         default:
+            System.out.println("Something has gone wrong in country select!");
+            break;
+      }
+   }   
+   
+   public static void assignPlayerToFaction(int numPlayers, int userChoice,
+         int playerNumber)
+   {
+      switch(numPlayers)
+      {
+         case 2:
+            switch(userChoice)
+            {
+               case 1:
+                  factionList[0].setPlayerID(playerNumber);
+                  factionList[2].setPlayerID(playerNumber);
+                  factionList[4].setPlayerID(playerNumber);
+                  break;
+               case 2:
+                  factionList[1].setPlayerID(playerNumber);
+                  factionList[3].setPlayerID(playerNumber);
+                  break;
+            }
+            break;
+         case 3:
+            switch(userChoice)
+            {
+               case 1:
+                  factionList[0].setPlayerID(playerNumber);
+                  factionList[2].setPlayerID(playerNumber);
+                  factionList[4].setPlayerID(playerNumber);
+                  break;
+               case 2:
+                  factionList[1].setPlayerID(playerNumber);
+                  break;
+               case 3:
+                  factionList[3].setPlayerID(playerNumber);
+                  break;
+            }
+            break;
+         case 4:
+            switch(userChoice)
+            {
+               case 1:
+                  factionList[0].setPlayerID(playerNumber);
+                  factionList[4].setPlayerID(playerNumber);
+                  break;
+               case 2:
+                  factionList[1].setPlayerID(playerNumber);
+                  break;
+               case 3:
+                  factionList[2].setPlayerID(playerNumber);
+                  break;
+               case 4:
+                  factionList[3].setPlayerID(playerNumber);
+                  break;
+            }
+            break;
+         case 5:
+            switch(userChoice)
+            {
+               case 1:
+                  factionList[0].setPlayerID(playerNumber);
+                  break;
+               case 2:
+                  factionList[1].setPlayerID(playerNumber);
+                  break;
+               case 3:
+                  factionList[2].setPlayerID(playerNumber);
+                  break;
+               case 4:
+                  factionList[3].setPlayerID(playerNumber);
+                  break;
+               case 5:
+                  factionList[4].setPlayerID(playerNumber);
+                  break;
+            }
+            break;
+         default:
+            System.out.println("Error assigning player to country.");
+            break;
+      }
+   }
+   
+   public static void developWeapons(int currentPlayer)
+   {
+      input = new Scanner(System.in); //reads input from console
+      boolean selectResearchComplete = false;
+      boolean rollForResearchComplete = false;
+      boolean valid = false;
+      int menuPage = 1;
+      int researchAttempted = 7;
+      int ipcSpent = -1;
+      
+      do
+      {
+         while(!valid)
+         {
+            selectResearchComplete = false;
+            researchMenu(menuPage, currentPlayer);
+            researchAttempted = Integer.parseInt(input.nextLine());
+            if(researchAttempted > DEFAULT_MIN_VALUE && researchAttempted <= MAX_RESEARCH)
+            {
+               valid = true;
+               menuPage++;
+            }
+            else
+            {
+               System.out.println("Enter a number from 1 to 7.");
+            }
+            
+            if(researchAttempted == 7)
+            {
+               selectResearchComplete = true;
+               rollForResearchComplete = true;
+            }
+         }
+         while(!selectResearchComplete)
+         {
+            researchMenu(menuPage, currentPlayer);
+            ipcSpent = Integer.parseInt(input.nextLine());
+            if(ipcSpent == 0)
+            {
+               menuPage--;
+               valid = false;
+               selectResearchComplete = true;
+            }
+            else
+            {
+               if(factionList[currentPlayer].rollResearch(ipcSpent, researchAttempted))
+               {
+                  selectResearchComplete = true;
+                  rollForResearchComplete = true;
+               }
+            }
+         }
+      }while(!rollForResearchComplete || !selectResearchComplete);
+   }
+   
+   public static void researchMenu(int menuPage, int currentPlayer)
+   {
+      switch(menuPage)
+      {
+         case 1:
+            System.out.println("Choose a development. Select one of the following options:");
+            System.out.println("You current bank is: " + factionList[currentPlayer].getPlayerBank() + " IPCs");
+            System.out.println("1. Jet fighters: fighter defense increases to 5.");
+            System.out.println("2. Rockets: Antiarcraft guns can reduce enemy IPCs.");
+            System.out.println("3. Super Subs: Submarine attack increases to 3.");
+            System.out.println("4. Long-Range Aircraft: Fighter range increases to 6, bombers to 8.");
+            System.out.println("5. Combined Bombard: Destroyers conduct bombardment during amphibious assaults");
+            System.out.println("6. Heavy bombers: Bombers roll two dice on each attack");
+            System.out.println("7. No research this turn.");
+            break;
+
+         case 2:
+            System.out.println("Enter amount of IPCs to spend (0 to go back). Each die costs 5 IPC.");
+            break;
+            
+         default:
+            System.out.println("Error: Should not have reached here");
+        
+      }
+
+   }
+   
 
    //List of initial territories and their default values
    //Board set up initialization
-   public void initialize(){
+   public static void initializeTerritories()
+   {
       int i;
       //Deployment territory
       territoryList[0] = new Territory("Deployment Zone", 0, 0, false, false, 
@@ -191,7 +487,7 @@ public class MainGame /*extends ApplicationAdapter*/ {
       territoryList[142] = new Territory("Mexico", 4, 2, true, false, 
             false, false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false);
 
-	  //Init sea territories
+      //Init sea territories
       //Format: Battleship, aircraft carrier, transport, submarine, destroyer
       //Soviet Union
       territoryList[4].updateSeaUnits(0, 0, 0, 0, 1, 0);
@@ -221,32 +517,15 @@ public class MainGame /*extends ApplicationAdapter*/ {
       territoryList[10].updateSeaUnits(4, 0, 0, 2, 0, 1);
       territoryList[20].updateSeaUnits(4, 0, 0, 0, 0, 1);
       territoryList[52].updateSeaUnits(4, 0, 1, 0, 1, 0);
-   }
+   }      
    
-   
-   public void main(){
-       initialize();
-       short victory = 0;
-       short currentPlayer = 1;
-       
-       while(victory == 0){
-           
-           if(currentPlayer == 6)
-               for(int i=1; i<6; i++){
-                   //faction[i].victory = victory;
-                   i = 1;
-               }
-           //developWeapons()
-           //purchaseUnits()
-           //combat()
-           //move()
-           //mobilizeNewUnits()
-           //collectIncome()
-           
-           currentPlayer++;
-       }
+   public static void printTerrs()
+   {
+      for(int i = 0; i < MAX_TERRITORIES; i++)
+      {
+         System.out.println("" + territoryList[i].getName());
+      }
    }
-      
 
    /*
    ***** Original main files *****
