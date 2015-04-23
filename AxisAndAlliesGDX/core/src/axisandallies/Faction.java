@@ -13,25 +13,27 @@ public class Faction{
    private static final int MIN_BANK = 0;
    private static final int MIN_INCOME = 0;
    private static final int MAX_INCOME = 63;
-   private static final int DEFAULT_FACTION = -1;
-   private static final int DEFAULT_PLAYERID = -1;
-   private int faction, playerID, playerBank, income;
+   private int faction, playerID;
+   private int playerBank = 0;
+   private int income = 0;
    private Random rand = new Random();
-   private boolean[] research = new boolean[MAX_RESEARCH];
-   private boolean isDefeated = false;
+   private boolean[] research = new boolean[] {false, false, false,
+      false, false, false};
    
    public Faction()
    {
-      setFaction(Faction.DEFAULT_FACTION);
-      setFaction(Faction.DEFAULT_PLAYERID);      
+      setFaction(0);
+      setPlayerID(0);
+      increasePlayerBank(0);
+      increaseIncome(0);
    }
    
-   public Faction(int faction, int playerID)
+   public Faction(int faction, int playerID, int bank, int income)
    {
-      if(!setFaction(faction))
-         setFaction(Faction.DEFAULT_FACTION);
-      if(!setPlayerID(playerID))
-         setFaction(Faction.DEFAULT_PLAYERID);
+      setFaction(faction);
+      setPlayerID(playerID);
+      increasePlayerBank(bank);
+      increaseIncome(income);
    }
    
    
@@ -89,12 +91,24 @@ public class Faction{
          return false;
    }
    
-   //sets the bank of the faction to newBank
-   public boolean setPlayerBank(int newBank)
+   public boolean increasePlayerBank(int amount)
    {
-      if(newBank >= Faction.MIN_BANK)
+      if(amount >= Faction.MIN_BANK)
       {
-         this.playerBank = newBank;
+         this.playerBank += amount;
+         return true;
+      }
+      else
+         return false;
+   }
+   
+   public boolean decreasePlayerBank(int amount)
+   {
+      int tempBank = this.income - amount;
+      
+      if(tempBank >= Faction.MIN_BANK)
+      {
+         this.playerBank -= amount;
          return true;
       }
       else
@@ -102,11 +116,26 @@ public class Faction{
    }
    
    //sets the faction single turn income to newIncome
-   public boolean setIncome(int newIncome)
+   public boolean increaseIncome(int newIncome)
    {
-      if(newIncome >= Faction.MIN_INCOME && newIncome <= Faction.MAX_INCOME)
+      int tempIncome = this.income + newIncome;
+      
+      if(tempIncome <= Faction.MAX_INCOME)
       {
-         this.income = newIncome;
+         this.income += newIncome;
+         return true;
+      }
+      else
+         return false;
+   }
+   
+   public boolean decreaseIncome(int newIncome)
+   {
+      int tempIncome = this.income - newIncome;
+      
+      if(tempIncome >= Faction.MIN_INCOME)
+      {
+         this.income -= newIncome;
          return true;
       }
       else
@@ -125,36 +154,52 @@ public class Faction{
          return false;
    }
    
-   //sets a factions defeat status to true
-   public boolean setIsDefeated(boolean isDefeated)
-   {
-      this.isDefeated = true;
-      return true;
-   }
-   
-        //Functions
 	public boolean rollResearch(int amtWager, int researchAttempted)
 	{
 		int numDie;
 		int roll;
+		boolean researchSuccess = false;
 
-		if(amtWager % 5 != 0 || amtWager < 5)
+		if(amtWager % 5 != 0)
+		{
+		   System.out.println("Returning to menu...");
+		   return false;
+	   }
+		else if(amtWager < 5)
 		{
 			System.out.println("Each die costs 5 IPCs. Must spend a multiple of 5 for research.");
 			return false;
 		}
 		else
 		{
-			numDie = amtWager % 5;
+			numDie = amtWager / 5;
+			if(!decreasePlayerBank(amtWager))
+			{
+			   System.out.println("Insufficient funds, select new amount");
+			   return false;
+			}
+			
+			System.out.println("Rolling for research!");
+			System.out.println("...");
 			for(int i = 0; i < numDie; i++)
 			{
 				roll = rand.nextInt(MAX_RESEARCH);
-				if(roll == researchAttempted){
+				System.out.print("" + roll + "\t");
+				if(roll == researchAttempted)
+				{
 					setResearch(researchAttempted);
-					System.out.println("Research complete!");
+					researchSuccess = true;
 				}
-				
 			}
+			if(researchSuccess)
+			{
+			   System.out.println("\nResearch succesfully completed!");
+			}
+			else
+			{
+			   System.out.println("\nResearch failed.");
+			}
+			
 			return true;
 		}
 	}
