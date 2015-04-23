@@ -27,7 +27,13 @@ public class Faction{
       increasePlayerBank(0);
       increaseIncome(0);
    }
-   
+   /**
+    * Constructor for the faction class
+    * @param faction which faction is this instance of the class
+    * @param playerID the playerID playing this class
+    * @param bank the number of IPCs the player has
+    * @param income the current income of the player
+    */
    public Faction(int faction, int playerID, int bank, int income)
    {
       setFaction(faction);
@@ -154,6 +160,15 @@ public class Faction{
          return false;
    }
    
+   /**
+    * Rolling for research for a specific faction.
+    * Research is performed by rolling dice for the indicated number of the
+    * research (i.e. Fighter jets succeeds on a roll of a 1).
+    * Dice is purchased in increments of 5 IPC each.
+    * @param amtWager the amount of IPC spent on dice
+    * @param researchAttempted the index number of the research being attempted
+    * @return boolean to indicate whether the method completed correctly
+    */
 	public boolean rollResearch(int amtWager, int researchAttempted)
 	{
 		int numDie;
@@ -185,6 +200,7 @@ public class Faction{
 			{
 				roll = rand.nextInt(MAX_RESEARCH);
 				System.out.print("" + roll + "\t");
+				//If any roll is the number being attempted, then research succeeds
 				if(roll == researchAttempted)
 				{
 					setResearch(researchAttempted);
