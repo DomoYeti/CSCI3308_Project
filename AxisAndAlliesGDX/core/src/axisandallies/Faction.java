@@ -177,7 +177,7 @@ public class Faction{
 
 		if(amtWager % 5 != 0)
 		{
-		   System.out.println("Returning to menu...");
+		   System.out.println("Each die costs 5 IPCs. Must spend a multiple of 5 for research.");
 		   return false;
 	   }
 		else if(amtWager < 5)
@@ -198,7 +198,7 @@ public class Faction{
 			System.out.println("...");
 			for(int i = 0; i < numDie; i++)
 			{
-				roll = rand.nextInt(MAX_RESEARCH);
+				roll = rand.nextInt(MAX_RESEARCH) + 1;
 				System.out.print("" + roll + "\t");
 				//If any roll is the number being attempted, then research succeeds
 				if(roll == researchAttempted)
