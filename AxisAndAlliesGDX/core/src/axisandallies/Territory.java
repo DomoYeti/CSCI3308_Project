@@ -119,7 +119,7 @@ public class Territory{
    {
       return this.tank;
    }
-   public int[] getFight()
+   public int[] getFighter()
    {
       return this.fighter;
    }

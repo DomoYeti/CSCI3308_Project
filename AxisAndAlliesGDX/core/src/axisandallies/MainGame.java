@@ -351,15 +351,19 @@ public class MainGame /*extends ApplicationAdapter*/ {
    
    public static void combatMoveAndCombat(int currentPlayer, int currentFaction){
        Attack[] attackList = new Attack[MAX_TERRITORIES];
+       int numberOfAttacks = 0;
        //Combat Move phase
        boolean concluded = false;
        while(concluded == false){
+           //prepare a new attack
+           Attack currentAttack = null;
            boolean done = false;
            String attackerName;
            String defenderName;
-           Territory attackingTerritory;
-           Territory defendingTerritory;
-           //read user input
+           Territory attackingTerritory = null;
+           Territory defendingTerritory = null;
+           
+           //read user input for selecting attacking territory
            while(done == false){
                System.out.print("Enter the territory you would like to mobilize from: ");
                attackerName = input.next( );
@@ -376,7 +380,9 @@ public class MainGame /*extends ApplicationAdapter*/ {
                }
            }
            done = false;
-           //read user input
+           currentAttack.setAttacker(attackingTerritory);
+           
+           //read user input for selecting territory to attack
            while(done == false){
                System.out.print("Enter the territory you would like to attack: ");
                defenderName = input.next( );
@@ -393,9 +399,23 @@ public class MainGame /*extends ApplicationAdapter*/ {
                }
            }
            done = false;
+           currentAttack.setDefender(defendingTerritory);
+           
+           //read user input for selecting units to attack
+           while(done == false){
+               
+               System.out.print("Enter the territory you would like to attack: ");
+           }
+           
+           //cleanup and packaging of Attack
+           attackList[numberOfAttacks] = currentAttack;
+           numberOfAttacks++;
        }
        
        //Combat Resolution phase
+       
+
+       
    }
    
    /**

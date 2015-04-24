@@ -162,6 +162,14 @@ public class Attack {
     
     
     //Mutators
+    public void setAttacker(Territory wokka)
+   {
+      this.attacker = wokka;
+   }
+    public void setDefender(Territory flokka)
+   {
+      this.defender = flokka;
+   }
    public void setInfantry(int attackers, int defenders)
    {
       aInfantry = attackers;
