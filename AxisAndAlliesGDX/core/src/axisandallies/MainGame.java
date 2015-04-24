@@ -1,6 +1,6 @@
 /** 
  * MainGame runs the application and makes calls to each game phase
- * @version 0.3
+ * @version 0.4
  * 
  */
 
@@ -23,7 +23,9 @@ public class MainGame /*extends ApplicationAdapter*/ {
    private static Scanner input;
    
    public static void main(String[] args){
-       
+       //opening message
+      System.out.println("\n\n\n");
+      System.out.println("Welcome to Axis and Allies, the definitive wargame.\n");
       initializePlayers();
       initializeTerritories();
       //printTerrs();
@@ -367,26 +369,46 @@ public class MainGame /*extends ApplicationAdapter*/ {
            Territory attackingTerritory = null;
            Territory defendingTerritory = null;
            
+           String curFac = null;
+           if(currentFaction == 0){
+               curFac = "Russia";
+           }
+           else if(currentFaction == 1){
+               curFac = "Germany";
+           }
+           else if(currentFaction == 2){
+               curFac = "UK";
+           }
+           else if(currentFaction == 3){
+               curFac = "Japan";
+           }
+           else if(currentFaction == 4){
+               curFac = "US";
+           }
+           String out = String.format("Player %d You are currently %s.\n", currentPlayer, curFac);
+           System.out.print(out);
            //read user input for selecting attacking territory, SOLID
            while(done == false){
                System.out.print("Enter the territory you would like to mobilize from: ");
                attackerName = input.next( );
                //check is territory
                attackingTerritory = getTerritoryFromName(attackerName);
-               if(attackingTerritory == null){
-                   System.out.print("That is not a known territory.\n");
-                   return;
+               if(attackingTerritory.getName().equals(attackerName)){
+                   //check is owned
+                   if(currentFaction == attackingTerritory.getFaction()){
+                       //print message and done
+                       String selection = String.format("You have selected %s.\n", attackerName);
+                       System.out.print(selection);
+                       done = true;
+                   }
+                   else System.out.print("You do not control that territory!\n");
                }
-               //check is owned
-               if(currentFaction != attackingTerritory.getFaction()){
-                   System.out.print("You do not control that territory!\n");
-                   return;
-               }
+               else System.out.print("That is not a known territory.\n");
            }
            done = false;
            
            //read user input for selecting attacking unit type-group
-           while(done == false)
+           while(done == false){
                if(attackingTerritory.getIsLand()){
                    //land territory
                    int infantry = attackingTerritory.getInfantry(currentFaction);
@@ -395,8 +417,8 @@ public class MainGame /*extends ApplicationAdapter*/ {
                    int fighter = attackingTerritory.getFighters(currentFaction);
                    int bomber = attackingTerritory.getBombers(currentFaction);
                    
-                   String out = String.format("You have %d Infantry, %d Artillery, %d Tanks, %d Fighters, and %d Bombers.\n", infantry, artillery, tank, fighter, bomber);
-                   System.out.print(out);
+                   String roster = String.format("You have %d Infantry, %d Artillery, %d Tanks, %d Fighters, and %d Bombers.\n", infantry, artillery, tank, fighter, bomber);
+                   System.out.print(roster);
                }
                else{
                    //sea territory
@@ -406,47 +428,49 @@ public class MainGame /*extends ApplicationAdapter*/ {
                    int submarine = attackingTerritory.getSubmarines(currentFaction);
                    int destroyer = attackingTerritory.getDestroyers(currentFaction);
                    
-                   String out = String.format("You have %d Battleships, %d Aircraft Carriers, %d Transports, %d Submarines, and %d Destroyers.\n", battleship, carrier, transport, submarine, destroyer);
-                   System.out.print(out);
+                   String roster = String.format("You have %d Battleships, %d Aircraft Carriers, %d Transports, %d Submarines, and %d Destroyers.\n", battleship, carrier, transport, submarine, destroyer);
+                   System.out.print(roster);
                }
            
                System.out.print("Enter the unit type you would like to mobilize: ");
                attackingUnit = input.next( );
                //check is unit
-               if(attackingUnit == "Infantry"){
+               if(attackingUnit.equals("Infantry")){
+                   System.out.print("Enter the number of units you would like to mobilize: ");
+                   String unitStrength = input.next( );
+               }
+               else if(attackingUnit.equals("Artillery")){
                    
                }
-               else if(attackingUnit ==  "Artillery"){
+               else if(attackingUnit.equals("Tank")){
                    
                }
-               else if(attackingUnit == "Tank"){
+               else if(attackingUnit.equals("Fighter")){
                    
                }
-               else if(attackingUnit == "Fighter"){
+               else if(attackingUnit.equals("Bomber")){
                    
                }
-               else if(attackingUnit == "Bomber"){
+               else if(attackingUnit.equals("Battleship")){
                    
                }
-               else if(attackingUnit == "Battleship"){
+               else if(attackingUnit.equals("Carrier")){
                    
                }
-               else if(attackingUnit == "Carrier"){
+               else if(attackingUnit.equals("Transport")){
                    
                }
-               else if(attackingUnit == "Transport"){
+               else if(attackingUnit.equals("Submarine")){
                    
                }
-               else if(attackingUnit == "Submarine"){
-                   
-               }
-               else if(attackingUnit == "Destroyer"){
+               else if(attackingUnit.equals("Destroyer")){
                    
                }
                else{
                    System.out.print("That is not a valid unit type.\n");
                }
-               
+           }
+           
            //read user input for selecting territory to attack, todo
            while(done == false){
                System.out.print("Enter the territory you would like to attack: ");
@@ -499,7 +523,7 @@ public class MainGame /*extends ApplicationAdapter*/ {
    public static void combatMove(int currentFaction, Unit units, int numberOfUnits, Territory attackingTerritory, Territory defendingTerritory){
        //if(unitMoves == 0) return;
        String unitType = units.getType();
-       if(unitType == "Infantry"){
+       if(unitType.equals("Infantry")){
            //add units to invaded territory
            if(defendingTerritory.setInfantry(currentFaction, numberOfUnits)){
                int remaining = attackingTerritory.getInfantry(currentFaction) - numberOfUnits;
@@ -509,7 +533,7 @@ public class MainGame /*extends ApplicationAdapter*/ {
                }
            }
        }
-       else if(unitType == "Artillery"){
+       else if(unitType.equals("Artillery")){
            //add units to invaded territory
            if(defendingTerritory.setArtillery(currentFaction, numberOfUnits)){
                int remaining = attackingTerritory.getArtillery(currentFaction) - numberOfUnits;
@@ -519,7 +543,7 @@ public class MainGame /*extends ApplicationAdapter*/ {
                }
            }
        }
-       else if(unitType == "Tank"){
+       else if(unitType.equals("Tank")){
            //add units to invaded territory
            if(defendingTerritory.setTanks(currentFaction, numberOfUnits)){
                int remaining = attackingTerritory.getTanks(currentFaction) - numberOfUnits;
@@ -529,7 +553,7 @@ public class MainGame /*extends ApplicationAdapter*/ {
                }
            }
        }
-       else if(unitType == "Fighter"){
+       else if(unitType.equals("Fighter")){
            //add units to invaded territory
            if(defendingTerritory.setFighters(currentFaction, numberOfUnits)){
                int remaining = attackingTerritory.getFighters(currentFaction) - numberOfUnits;
@@ -539,7 +563,7 @@ public class MainGame /*extends ApplicationAdapter*/ {
                }
            }
        }
-       else if(unitType == "Bomber"){
+       else if(unitType.equals("Bomber")){
            //add units to invaded territory
            if(defendingTerritory.setBombers(currentFaction, numberOfUnits)){
                int remaining = attackingTerritory.getBombers(currentFaction) - numberOfUnits;
@@ -549,7 +573,7 @@ public class MainGame /*extends ApplicationAdapter*/ {
                }
            }
        }
-       else if(unitType == "Battleship"){
+       else if(unitType.equals("Battleship")){
            //add units to invaded territory
            if(defendingTerritory.setBattleships(currentFaction, numberOfUnits)){
                int remaining = attackingTerritory.getBattleships(currentFaction) - numberOfUnits;
@@ -559,7 +583,7 @@ public class MainGame /*extends ApplicationAdapter*/ {
                }
            }
        }
-       else if(unitType == "Carrier"){
+       else if(unitType.equals("Carrier")){
            if(defendingTerritory.setAircraftCarriers(currentFaction, numberOfUnits)){
                int remaining = attackingTerritory.getAircraftCarriers(currentFaction) - numberOfUnits;
                //removes units from staging territory
@@ -568,7 +592,7 @@ public class MainGame /*extends ApplicationAdapter*/ {
                }
            }
        }
-       else if(unitType == "Transport"){
+       else if(unitType.equals("Transport")){
            if(defendingTerritory.setTransports(currentFaction, numberOfUnits)){
                int remaining = attackingTerritory.getTransports(currentFaction) - numberOfUnits;
                //removes units from staging territory
@@ -577,7 +601,7 @@ public class MainGame /*extends ApplicationAdapter*/ {
                }
            }
        }
-       else if(unitType == "Submarine"){
+       else if(unitType.equals("Submarine")){
            if(defendingTerritory.setSubmarines(currentFaction, numberOfUnits)){
                int remaining = attackingTerritory.getSubmarines(currentFaction) - numberOfUnits;
                //removes units from staging territory
@@ -586,7 +610,7 @@ public class MainGame /*extends ApplicationAdapter*/ {
                }
            }
        }
-       else if(unitType == "Destroyer"){
+       else if(unitType.equals("Destroyer")){
            if(defendingTerritory.setDestroyers(currentFaction, numberOfUnits)){
                int remaining = attackingTerritory.getDestroyers(currentFaction) - numberOfUnits;
                //removes units from staging territory
@@ -1079,12 +1103,14 @@ public class MainGame /*extends ApplicationAdapter*/ {
       }
    }
    
-   public static Territory getTerritoryFromName(String nameString)
+   public static Territory getTerritoryFromName(String inputString)
    {
-      for(int i = 0; i < MAX_TERRITORIES; i++)
+      for(int j = 0; j < MAX_TERRITORIES; j++)
       {
-        if(territoryList[i].getName() == nameString) return territoryList[i];
+        String name = territoryList[j].getName();
+        if(name.equals(inputString)) return territoryList[j];
       }
+      System.out.print("Territory name lookup failed.\n");
       return null;
    }
 
