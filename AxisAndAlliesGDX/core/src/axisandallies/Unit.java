@@ -1,6 +1,7 @@
 /*
  * This is the Unit class
  * The class is a helper class to track the battle stats of units from all factions
+ * SUGGESTED: Attach Unit classes to Faction classes as a fast way of tracking upgrades
  */
 package axisandallies;
 

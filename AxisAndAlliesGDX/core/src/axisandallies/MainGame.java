@@ -605,6 +605,8 @@ public class MainGame /*extends ApplicationAdapter*/ {
    public static void resolveCombat(Territory territory){
        //country booleans only true if enemies to territory controller
        boolean Russia = false, Germany = false, UK = false, Japan = false, US = false;
+       boolean enemies[] = new boolean[5];
+       boolean allies[] = new boolean[5];
        int owner = territory.getFaction();
        //determine enemies
        if(owner % 2 == 0){
@@ -616,21 +618,65 @@ public class MainGame /*extends ApplicationAdapter*/ {
            UK = territory.getIsFactionUnits(2);
            US = territory.getIsFactionUnits(4);
        }
+       enemies[0] = Russia;
+       enemies[1] = Germany;
+       enemies[2] = UK;
+       enemies[3] = Japan;
+       enemies[4] = US;
+       allies[0] = !Russia;
+       allies[1] = !Germany;
+       allies[2] = !UK;
+       allies[3] = !Japan;
+       allies[4] = !US;
        //roll for combat
-       //roll for Opening Fire
-       int airCasualty = 0;
-       if(territory.getAntiAircraft()){
-           if(Russia) airCasualty = airCasualty + flacked(territory, 0);
-           if(Germany) airCasualty = airCasualty + flacked(territory, 1);
-           if(UK) airCasualty = airCasualty + flacked(territory, 2);
-           if(Japan) airCasualty = airCasualty + flacked(territory, 3);
-           if(US) airCasualty = airCasualty + flacked(territory, 4);
+       boolean concluded = false;
+       while(concluded == false){
+            //roll for Opening Fire
+            int airCasualty = 0;
+            if(territory.getAntiAircraft()){
+                if(Russia) airCasualty = airCasualty + flacked(territory, 0);
+                if(Germany) airCasualty = airCasualty + flacked(territory, 1);
+                if(UK) airCasualty = airCasualty + flacked(territory, 2);
+                if(Japan) airCasualty = airCasualty + flacked(territory, 3);
+                if(US) airCasualty = airCasualty + flacked(territory, 4);
+            }
+            String out = String.format("There were %d casualties from Opening Fire from Anti-Aircraft batteries.\n", airCasualty);
+            System.out.print(out);
+            //Naval Bombardment todo
+            //Submarines todo
+            //roll for Attackers
+            int[][] attackers = new int[5][8];
+            for(int i = 0; i < 5; i++){
+                if(enemies[i]){
+                    attackers[i][0] = attackers[i][0] + territory.getInfantry(i);
+                    attackers[i][1] = attackers[i][1] + territory.getArtillery(i);
+                    attackers[i][2] = attackers[i][2] + territory.getTanks(i);
+                    attackers[i][3] = attackers[i][3] + territory.getFighters(i);
+                    attackers[i][4] = attackers[i][4] + territory.getBombers(i);
+                    attackers[i][5] = attackers[i][5] + territory.getBattleships(i);
+                    attackers[i][6] = attackers[i][6] + territory.getAircraftCarriers(i);
+                    attackers[i][7] = attackers[i][7] + territory.getDestroyers(i);
+                }
+            }
+            int defenderCasualties = attackCasualties(attackers, enemies);
+            //roll for Defenders
+            int[][] defenders = new int[5][9];
+            for(int i = 0; i < 5; i++){
+                if(!enemies[i]){
+                    defenders[i][0] = defenders[i][0] + territory.getInfantry(i);
+                    defenders[i][1] = defenders[i][1] + territory.getArtillery(i);
+                    defenders[i][2] = defenders[i][2] + territory.getTanks(i);
+                    defenders[i][3] = defenders[i][3] + territory.getFighters(i);
+                    defenders[i][4] = defenders[i][4] + territory.getBombers(i);
+                    defenders[i][5] = defenders[i][5] + territory.getBattleships(i);
+                    defenders[i][6] = defenders[i][6] + territory.getAircraftCarriers(i);
+                    defenders[i][6] = defenders[i][7] + territory.getTransports(i);
+                    defenders[i][7] = defenders[i][8] + territory.getDestroyers(i);
+                }
+            }
+            int attackerCasualties = defenceCasualties(defenders, allies);
+            //Press Attack or Retreat
        }
-       //Naval Bombardment todo
-       //Submarines todo
-       //roll for Attackers
-       //roll for Defenders
-       //Press Attack or Retreat
    }
    
    
@@ -651,6 +697,167 @@ public class MainGame /*extends ApplicationAdapter*/ {
        return casualty;
    }
    
+   
+   /**
+    * Helper function to resolve attack-caused casualties
+    * @param roster are all of the units, [faction][type]
+    * @param attackers
+    * Note: todo: add the capacity to understand which units have been upgraded in any faction
+    */
+    public static int attackCasualties(int[][] roster, boolean[] attackers){
+        int infantryAttack = 1;
+        int artilleryAttack = 2;
+        int tankAttack = 3;
+        int fighterAttack = 3;
+        int bomberAttack = 4;
+        int battleshipAttack = 4;
+        int carrierAttack = 1;
+        int destroyerAttack = 3;
+        int casualties = 0;
+        //check each faction
+        for(int j = 0; j < 4; j++){
+            //If you are attacking, be counted
+            if(attackers[j]){
+                //Infantry
+                for(int i = 0; i < roster[j][0]; i++){
+                    if(((int) (Math.random() * 6) + 1) < infantryAttack){
+                        casualties++;
+                    }
+                }
+                //Artillery
+                    for(int i = 0; i < roster[j][1]; i++){
+                    if(((int) (Math.random() * 6) + 1) < artilleryAttack){
+                        casualties++;
+                    }
+                }
+               //Tanks
+                for(int i = 0; i < roster[j][2]; i++){
+                    if(((int) (Math.random() * 6) + 1) < tankAttack){
+                        casualties++;
+                    }
+                }
+                //Fighters
+                for(int i = 0; i < roster[j][3]; i++){
+                    if(((int) (Math.random() * 6) + 1) < fighterAttack){
+                        casualties++;
+                    }
+                }
+                //Bombers
+                for(int i = 0; i < roster[j][4]; i++){
+                    if(((int) (Math.random() * 6) + 1) < bomberAttack){
+                        casualties++;
+                    }
+                }
+                //Battleship
+                for(int i = 0; i < roster[j][5]; i++){
+                    if(((int) (Math.random() * 6) + 1) < battleshipAttack){
+                        casualties++;
+                    }
+                }
+                //Carrier
+                for(int i = 0; i < roster[j][6]; i++){
+                    if(((int) (Math.random() * 6) + 1) < carrierAttack){
+                        casualties++;
+                    }
+                }
+                //Destroyer
+                for(int i = 0; i < roster[j][7]; i++){
+                    if(((int) (Math.random() * 6) + 1) < destroyerAttack){
+                        casualties++;
+                    }
+                }
+            }
+            //end of counting loop
+        }
+        String out = String.format("Attackers deal %d casualties to Defenders!\n", casualties);
+        System.out.print(out);
+        return casualties;
+    }
+   
+    
+   /**
+    * Helper function to resolve defense-caused casualties
+    * @param roster are all of the units, [faction][type]
+    * @param defenders
+    * Note: todo: add the capacity to understand which units have been upgraded in any faction
+    */
+    public static int defenceCasualties(int[][] roster, boolean[] defenders){
+        int infantryDefence = 2;
+        int artilleryDefence = 2;
+        int tankDefence = 3;
+        int fighterDefence = 4;
+        int bomberDefence = 1;
+        int battleshipDefence = 4;
+        int carrierDefence = 3;
+        int transportDefence = 1;
+        int destroyerDefence = 3;
+        int casualties = 0;
+        //check each faction
+        for(int j = 0; j < 4; j++){
+            //If you are defending, be counted
+            if(defenders[j]){
+                //Infantry
+                for(int i = 0; i < roster[j][0]; i++){
+                    if(((int) (Math.random() * 6) + 1) < infantryDefence){
+                        casualties++;
+                    }
+                }
+                //Artillery
+                    for(int i = 0; i < roster[j][1]; i++){
+                    if(((int) (Math.random() * 6) + 1) < artilleryDefence){
+                        casualties++;
+                    }
+                }
+               //Tanks
+                for(int i = 0; i < roster[j][2]; i++){
+                    if(((int) (Math.random() * 6) + 1) < tankDefence){
+                        casualties++;
+                    }
+                }
+                //Fighters
+                for(int i = 0; i < roster[j][3]; i++){
+                    if(((int) (Math.random() * 6) + 1) < fighterDefence){
+                        casualties++;
+                    }
+                }
+                //Bombers
+                for(int i = 0; i < roster[j][4]; i++){
+                    if(((int) (Math.random() * 6) + 1) < bomberDefence){
+                        casualties++;
+                    }
+                }
+                //Battleship
+                for(int i = 0; i < roster[j][5]; i++){
+                    if(((int) (Math.random() * 6) + 1) < battleshipDefence){
+                        casualties++;
+                    }
+                }
+                //Carrier
+                for(int i = 0; i < roster[j][6]; i++){
+                    if(((int) (Math.random() * 6) + 1) < carrierDefence){
+                        casualties++;
+                    }
+                }
+                //Transport
+                for(int i = 0; i < roster[j][7]; i++){
+                    if(((int) (Math.random() * 6) + 1) < transportDefence){
+                        casualties++;
+                    }
+                }
+                //Destroyer
+                for(int i = 0; i < roster[j][8]; i++){
+                    if(((int) (Math.random() * 6) + 1) < destroyerDefence){
+                        casualties++;
+                    }
+                }
+            }
+            //end of counting loop
+        }
+        String out = String.format("Defenders deal %d casualties to Attackers!\n", casualties);
+        System.out.print(out);
+        return casualties;
+    }
+    
    
    /**
     * Initialize all territories to their default values and owners
