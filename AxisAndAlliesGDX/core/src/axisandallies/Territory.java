@@ -38,11 +38,11 @@ public class Territory{
 		setIsNeutral(false);
 		setCapital(false);
 		setVictory(false);
-		setBattleship(0,0);
-		setAircraftCarrier(0,0);
-		setTransport(0,0);
-		setSubmarine(0,0);
-		setDestroyer(0,0);
+		setBattleships(0,0);
+		setAircraftCarriers(0,0);
+		setTransports(0,0);
+		setSubmarines(0,0);
+		setDestroyers(0,0);
 	}
 	/**
 	 * Territory constructor.
@@ -74,14 +74,14 @@ public class Territory{
 			System.out.println("Set victory error");
 		setInfantry(faction, infantry);
 		setArtillery(faction, artillery);
-		setTank(faction, tank);
-		setFighter(faction, fighter);
-		setBomber(faction, bomber);
-		setBattleship(faction, battleship);
-		setAircraftCarrier(faction, aircraftCarrier);
-		setTransport(faction, transport);
-		setSubmarine(faction, submarine);
-		setDestroyer(faction, destroyer);
+		setTanks(faction, tank);
+		setFighters(faction, fighter);
+		setBombers(faction, bomber);
+		setBattleships(faction, battleship);
+		setAircraftCarriers(faction, aircraftCarrier);
+		setTransports(faction, transport);
+		setSubmarines(faction, submarine);
+		setDestroyers(faction, destroyer);
 		setAntiAircraft(antiaircraftGun);
 		setIndustrialComplex(industrialComplex);
 	}
@@ -124,35 +124,35 @@ public class Territory{
    {
       return this.artillery[faction];
    }
-   public int getTank(int faction)
+   public int getTanks(int faction)
    {
       return this.tank[faction];
    }
-   public int getFighter(int faction)
+   public int getFighters(int faction)
    {
       return this.fighter[faction];
    }
-   public int getBomber(int faction)
+   public int getBombers(int faction)
    {
       return this.bomber[faction];
    }
-   public int getBattleship(int faction)
+   public int getBattleships(int faction)
    {
       return this.battleship[faction];
    }
-   public int getAircraftCarrier(int faction)
+   public int getAircraftCarriers(int faction)
    {
       return this.aircraftCarrier[faction];
    }
-   public int getTransport(int faction)
+   public int getTransports(int faction)
    {
       return this.transport[faction];
    }
-   public int getSubmarine(int faction)
+   public int getSubmarines(int faction)
    {
       return this.submarine[faction];
    }
-   public int getDestroyer(int faction)
+   public int getDestroyers(int faction)
    {
       return this.destroyer[faction];
    }
@@ -287,7 +287,7 @@ public class Territory{
          return false;
       }
    }
-   public boolean setTank(int factionPos, int count)
+   public boolean setTanks(int factionPos, int count)
    {
       if(this.setLandUnitParamterTest(factionPos, count))
       {
@@ -299,7 +299,7 @@ public class Territory{
          return false;
       }
    }
-   public boolean setFighter(int factionPos, int count)
+   public boolean setFighters(int factionPos, int count)
    {
       if(this.setLandUnitParamterTest(factionPos, count))
       {
@@ -311,7 +311,7 @@ public class Territory{
          return false;
       }
    }
-   public boolean setBomber(int factionPos, int count)
+   public boolean setBombers(int factionPos, int count)
    {
       if(this.setLandUnitParamterTest(factionPos, count))
       {
@@ -323,7 +323,7 @@ public class Territory{
          return false;
       }
    }
-   public boolean setBattleship(int factionPos, int count)
+   public boolean setBattleships(int factionPos, int count)
    {
       if(this.setSeaUnitParameterTest(factionPos, count))
       {
@@ -335,7 +335,7 @@ public class Territory{
          return false;
       }
    }
-   public boolean setAircraftCarrier(int factionPos, int count)
+   public boolean setAircraftCarriers(int factionPos, int count)
    {
       if(this.setSeaUnitParameterTest(factionPos, count))
       {
@@ -347,7 +347,7 @@ public class Territory{
          return false;
       }
    }  
-   public boolean setTransport(int factionPos, int count)
+   public boolean setTransports(int factionPos, int count)
    {
       if(this.setSeaUnitParameterTest(factionPos, count))
       {
@@ -359,7 +359,7 @@ public class Territory{
          return false;
       }
    }
-   public boolean setSubmarine(int factionPos, int count)
+   public boolean setSubmarines(int factionPos, int count)
    {
       if(this.setSeaUnitParameterTest(factionPos, count))
       {
@@ -371,7 +371,7 @@ public class Territory{
          return false;
       }
    }
-   public boolean setDestroyer(int factionPos, int count)
+   public boolean setDestroyers(int factionPos, int count)
    {
       if(this.setSeaUnitParameterTest(factionPos, count))
       {
@@ -481,9 +481,9 @@ public class Territory{
       
       if(!setInfantry(factionPos, infantryCount)){ success = false; }
       if(!setArtillery(factionPos, artilleryCount)){ success = false; }
-      if(!setTank(factionPos, tankCount)){ success = false; }
-      if(!setFighter(factionPos, fighterCount)){ success = false; }
-      if(!setBomber(factionPos, bomberCount)){ success = false; }
+      if(!setTanks(factionPos, tankCount)){ success = false; }
+      if(!setFighters(factionPos, fighterCount)){ success = false; }
+      if(!setBombers(factionPos, bomberCount)){ success = false; }
       
       return success;
    }
@@ -503,11 +503,11 @@ public class Territory{
    {
       boolean success = true;
       
-      if(!setBattleship(factionPos, battleshipCount)){ success = false; }
-      if(!setAircraftCarrier(factionPos, aircraftCarrierCount)){ success = false; }
-      if(!setTransport(factionPos, transportCount)){ success = false; }
-      if(!setSubmarine(factionPos, submarineCount)){ success = false; }
-      if(!setDestroyer(factionPos, destroyerCount)){ success = false; }
+      if(!setBattleships(factionPos, battleshipCount)){ success = false; }
+      if(!setAircraftCarriers(factionPos, aircraftCarrierCount)){ success = false; }
+      if(!setTransports(factionPos, transportCount)){ success = false; }
+      if(!setSubmarines(factionPos, submarineCount)){ success = false; }
+      if(!setDestroyers(factionPos, destroyerCount)){ success = false; }
       
       return success;
    }

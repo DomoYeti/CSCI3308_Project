@@ -349,6 +349,14 @@ public class MainGame /*extends ApplicationAdapter*/ {
 
    }
    
+   /**
+    * Phase 3: Move units from friendly territories into hostile territories
+    * Require user to select territories and declare units to invade them.
+    * Require user to enter the friendly and enemy territory names.
+    * Move units into territories and end the phase.
+    * @param currentPlayer the current player whose turn it is.
+    * @param currentFaction is the faction of the player.
+    */
    public static void combatMoveAndCombat(int currentPlayer, int currentFaction){
        input = new Scanner(System.in); //reads input from users
        //Combat Move phase
@@ -366,6 +374,7 @@ public class MainGame /*extends ApplicationAdapter*/ {
            int attackerBomber;
            Territory attackingTerritory = null;
            Territory defendingTerritory = null;
+           Territory altTerritory = null;
            
            //read user input for selecting attacking territory
            while(done == false){
@@ -416,6 +425,8 @@ public class MainGame /*extends ApplicationAdapter*/ {
                        while(complete == false){
                            //check is connected
                            if(attackingTerritory.getIsConnected(defenderName)){
+                               String out = String.format("You have %d Infantry units.  ", attackingTerritory.getInfantry(attackingTerritory.getFaction()));
+                               System.out.print(out);
                                 System.out.print("How many Infantry would you like to send?: ");
                                 attackerInfantry = input.nextInt();
                                 if(attackerInfantry <= attackingTerritory.getInfantry(attackingTerritory.getFaction())){
@@ -434,6 +445,8 @@ public class MainGame /*extends ApplicationAdapter*/ {
                        while(complete == false){
                            //check is connected
                            if(attackingTerritory.getIsConnected(defenderName)){
+                               String out = String.format("You have %d Artilery units.  ", attackingTerritory.getArtillery(attackingTerritory.getFaction()));
+                               System.out.print(out);
                                 System.out.print("How many Artillery would you like to send?: ");
                                 attackerArtillery = input.nextInt();
                                 if(attackerArtillery <= attackingTerritory.getArtillery(attackingTerritory.getFaction())){
@@ -448,8 +461,9 @@ public class MainGame /*extends ApplicationAdapter*/ {
                            System.out.print("This territory is too far away for Artillery to attack!\n");
                            complete = true;
                        }
+                       //Tank loop
                    }
-                   System.out.print("Ground troops cannot attack sea territories!\n");
+                   System.out.print("Ground units cannot attack sea territories!\n");
                }
                //sea attacking
                else{
@@ -462,8 +476,17 @@ public class MainGame /*extends ApplicationAdapter*/ {
        }
        
        //Combat Resolution phase
-       
-
+   }
+   
+    /**
+    * A helper function to facilitate a single combat move
+    * @param currentFaction is the faction moving their units
+    * @param units are the unit type moving
+    * @param numberOfUnits is the number of units moving
+    * @param attackingTerritory is the territory the units are coming from
+    * @param defendingTerritory is the territory the units are going to
+    */
+   public static void combatMove(int currentFaction, Unit units, int numberOfUnits, Territory attackingTerritory, Territory defendingTerritory){
        
    }
    
