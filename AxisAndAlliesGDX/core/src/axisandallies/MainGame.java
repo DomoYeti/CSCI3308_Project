@@ -28,23 +28,22 @@ public class MainGame /*extends ApplicationAdapter*/ {
       initializeTerritories();
       //printTerrs();
       short victory = 0;
-      int currentPlayer = 0;
+      int currentFaction = 0;
        
       while(victory == 0){
            
-        if(currentPlayer == 6)
+        if(currentFaction == 6)
                for(int i=1; i<6; i++){
                    //faction[i].victory = victory;
                 i = 1;
             }
-        developWeapons(currentPlayer);
+        developWeapons(currentFaction);
         //purchaseUnits()
-        //combat()
-        //move()
+        combatMoveAndCombat(factionList[currentFaction].getPlayerID(), currentFaction);
         //mobilizeNewUnits()
         //collectIncome()
            
-        currentPlayer = (currentPlayer + 1) % MAX_PLAYERS;
+        currentFaction = (currentFaction + 1) % MAX_PLAYERS;
       }
    }
    
@@ -115,8 +114,6 @@ public class MainGame /*extends ApplicationAdapter*/ {
             }
          }while(!validCountry || !validInput);
       }
-      
-
    }
    
    /**
@@ -367,11 +364,8 @@ public class MainGame /*extends ApplicationAdapter*/ {
            String attackerName = null;
            String defenderName = null;
            String attackingUnit = null;
-           int attackerInfantry;
-           int attackerArtillery;
            Territory attackingTerritory = null;
            Territory defendingTerritory = null;
-           Territory altTerritory = null;
            
            //read user input for selecting attacking territory, SOLID
            while(done == false){
@@ -453,7 +447,7 @@ public class MainGame /*extends ApplicationAdapter*/ {
                    System.out.print("That is not a valid unit type.\n");
                }
                
-           //read user input for selecting territory to attack
+           //read user input for selecting territory to attack, todo
            while(done == false){
                System.out.print("Enter the territory you would like to attack: ");
                defenderName = input.next( );
@@ -470,73 +464,25 @@ public class MainGame /*extends ApplicationAdapter*/ {
                }
            }
            done = false;
-           
-           
-           
-           
-           //read user input for selecting units to attack
-           while(done == false){
-               boolean complete = false;
-               //land attacking
-               if(attackingTerritory.getIsLand()){
-                   //check is land
-                   if(defendingTerritory.getIsLand()){
-                       //Infantry loop
-                       while(complete == false){
-                           //check is connected
-                           if(attackingTerritory.getIsConnected(defenderName)){
-                               String out = String.format("You have %d Infantry units.  ", attackingTerritory.getInfantry(attackingTerritory.getFaction()));
-                               System.out.print(out);
-                                System.out.print("How many Infantry would you like to send?: ");
-                                attackerInfantry = input.nextInt();
-                                if(attackerInfantry <= attackingTerritory.getInfantry(attackingTerritory.getFaction())){
-                                    if(attackerInfantry > 0){
-                                        defendingTerritory.setInfantry(attackingTerritory.getFaction(),attackerInfantry);
-                                        complete = true;
-                                    }
-                                    System.out.print("Not a valid number of Infantry.");
-                                }
-                                System.out.print("Not a valid number of Infantry.");
-                           }
-                           System.out.print("This territory is too far away for Infantry to attack!\n");
-                           complete = true;
-                       }
-                       //Artillery loop
-                       while(complete == false){
-                           //check is connected
-                           if(attackingTerritory.getIsConnected(defenderName)){
-                               String out = String.format("You have %d Artilery units.  ", attackingTerritory.getArtillery(attackingTerritory.getFaction()));
-                               System.out.print(out);
-                                System.out.print("How many Artillery would you like to send?: ");
-                                attackerArtillery = input.nextInt();
-                                if(attackerArtillery <= attackingTerritory.getArtillery(attackingTerritory.getFaction())){
-                                    if(attackerArtillery > 0){
-                                        defendingTerritory.setArtillery(attackingTerritory.getFaction(),attackerArtillery);
-                                        complete = true;
-                                    }
-                                    System.out.print("Not a valid number of Artillery.");
-                                }
-                                System.out.print("Not a valid number of Artillery.");
-                           }
-                           System.out.print("This territory is too far away for Artillery to attack!\n");
-                           complete = true;
-                       }
-                       //Tank loop
-                   }
-                   System.out.print("Ground units cannot attack sea territories!\n");
-               }
-               //sea attacking
-               else{
-                   
-               }
-               System.out.print(": ");
-           }
-           
            //cleanup and packaging of Attack
        }
        
        //Combat Resolution phase
+       //moves through all territories checking for invaders
+       for(int i = 1; i < 143; i++){
+           if((territoryList[i].getFaction() % 2) == 0){
+               if((territoryList[i].getInfantry(1) > 0) | (territoryList[i].getInfantry(3) > 0)){
+                   resolveCombat(territoryList[i]);
+               }
+           }
+           else{
+               if((territoryList[i].getInfantry(0) > 0) | (territoryList[i].getInfantry(2) > 0) | (territoryList[i].getInfantry(4) > 0)){
+                   resolveCombat(territoryList[i]);
+               }
+           }
+       }
    }
+   
    
     /**
     * A helper function to facilitate a single combat move for any single-type
@@ -649,6 +595,60 @@ public class MainGame /*extends ApplicationAdapter*/ {
                }
            }
        }
+   }
+   
+   
+   /**
+    * Helper function to resolve combats for units in hostile territories
+    * @param territory is the territory that needs resolution
+    */
+   public static void resolveCombat(Territory territory){
+       //country booleans only true if enemies to territory controller
+       boolean Russia = false, Germany = false, UK = false, Japan = false, US = false;
+       int owner = territory.getFaction();
+       //determine enemies
+       if(owner % 2 == 0){
+           Germany = territory.getIsFactionUnits(1);
+           Japan = territory.getIsFactionUnits(3);
+       }
+       else{
+           Russia = territory.getIsFactionUnits(0);
+           UK = territory.getIsFactionUnits(2);
+           US = territory.getIsFactionUnits(4);
+       }
+       //roll for combat
+       //roll for Opening Fire
+       int airCasualty = 0;
+       if(territory.getAntiAircraft()){
+           if(Russia) airCasualty = airCasualty + flacked(territory, 0);
+           if(Germany) airCasualty = airCasualty + flacked(territory, 1);
+           if(UK) airCasualty = airCasualty + flacked(territory, 2);
+           if(Japan) airCasualty = airCasualty + flacked(territory, 3);
+           if(US) airCasualty = airCasualty + flacked(territory, 4);
+       }
+       //Naval Bombardment todo
+       //Submarines todo
+       //roll for Attackers
+       //roll for Defenders
+       //Press Attack or Retreat
+   }
+   
+   
+   /**
+    * Helper function to resolve anti-aircraft opening fire
+    * @param territory is the territory that does the flacking
+    * @param faction is the faction being flacked
+    * Citation: http://introcs.cs.princeton.edu/java/13flow/RollDie.java.html
+    */
+   public static int flacked(Territory territory, int faction){
+       int planes = territory.getBombers(faction) + territory.getFighters(faction);
+       int casualty = 0;
+       for(int i = 0; i < planes; i++){
+           if(((int) (Math.random() * 6) + 1) < 2){
+               casualty++;
+           }
+       }
+       return casualty;
    }
    
    

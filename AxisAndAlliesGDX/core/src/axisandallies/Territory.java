@@ -164,6 +164,19 @@ public class Territory{
 	{
 		return this.isNeutral;
 	}
+   public boolean getIsFactionUnits(int faction){
+       if(this.infantry[faction] > 0) return true;
+       else if(this.artillery[faction] > 0) return true;
+       else if(this.tank[faction] > 0) return true;
+       else if(this.fighter[faction] > 0) return true;
+       else if(this.bomber[faction] > 0) return true;
+       else if(this.battleship[faction] > 0) return true;
+       else if(this.aircraftCarrier[faction] > 0) return true;
+       else if(this.transport[faction] > 0) return true;
+       else if(this.submarine[faction] > 0) return true;
+       else if(this.destroyer[faction] > 0) return true;
+       else return false;
+   }
    public int getConnectionsNumber()
    {
       return this.connectionsNumber;
@@ -184,6 +197,7 @@ public class Territory{
       }
       return false;
    }
+   
    
    //Mutators
    public boolean setFaction(int newFaction)
