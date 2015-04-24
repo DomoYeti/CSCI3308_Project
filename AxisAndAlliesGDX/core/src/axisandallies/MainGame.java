@@ -363,20 +363,17 @@ public class MainGame /*extends ApplicationAdapter*/ {
        boolean concluded = false;
        while(concluded == false){
            //prepare a new attack
-           Attack currentAttack = null;
            boolean done = false;
            String attackerName = null;
            String defenderName = null;
+           String attackingUnit = null;
            int attackerInfantry;
            int attackerArtillery;
-           int attackerTanks;
-           int attackerFighter;
-           int attackerBomber;
            Territory attackingTerritory = null;
            Territory defendingTerritory = null;
            Territory altTerritory = null;
            
-           //read user input for selecting attacking territory
+           //read user input for selecting attacking territory, SOLID
            while(done == false){
                System.out.print("Enter the territory you would like to mobilize from: ");
                attackerName = input.next( );
@@ -393,8 +390,69 @@ public class MainGame /*extends ApplicationAdapter*/ {
                }
            }
            done = false;
-           currentAttack.setAttacker(attackingTerritory);
            
+           //read user input for selecting attacking unit type-group
+           while(done == false)
+               if(attackingTerritory.getIsLand()){
+                   //land territory
+                   int infantry = attackingTerritory.getInfantry(currentFaction);
+                   int artillery = attackingTerritory.getArtillery(currentFaction);
+                   int tank = attackingTerritory.getTanks(currentFaction);
+                   int fighter = attackingTerritory.getFighters(currentFaction);
+                   int bomber = attackingTerritory.getBombers(currentFaction);
+                   
+                   String out = String.format("You have %d Infantry, %d Artillery, %d Tanks, %d Fighters, and %d Bombers.\n", infantry, artillery, tank, fighter, bomber);
+                   System.out.print(out);
+               }
+               else{
+                   //sea territory
+                   int battleship = attackingTerritory.getBattleships(currentFaction);
+                   int carrier = attackingTerritory.getAircraftCarriers(currentFaction);
+                   int transport = attackingTerritory.getTransports(currentFaction);
+                   int submarine = attackingTerritory.getSubmarines(currentFaction);
+                   int destroyer = attackingTerritory.getDestroyers(currentFaction);
+                   
+                   String out = String.format("You have %d Battleships, %d Aircraft Carriers, %d Transports, %d Submarines, and %d Destroyers.\n", battleship, carrier, transport, submarine, destroyer);
+                   System.out.print(out);
+               }
+           
+               System.out.print("Enter the unit type you would like to mobilize: ");
+               attackingUnit = input.next( );
+               //check is unit
+               if(attackingUnit == "Infantry"){
+                   
+               }
+               else if(attackingUnit ==  "Artillery"){
+                   
+               }
+               else if(attackingUnit == "Tank"){
+                   
+               }
+               else if(attackingUnit == "Fighter"){
+                   
+               }
+               else if(attackingUnit == "Bomber"){
+                   
+               }
+               else if(attackingUnit == "Battleship"){
+                   
+               }
+               else if(attackingUnit == "Carrier"){
+                   
+               }
+               else if(attackingUnit == "Transport"){
+                   
+               }
+               else if(attackingUnit == "Submarine"){
+                   
+               }
+               else if(attackingUnit == "Destroyer"){
+                   
+               }
+               else{
+                   System.out.print("That is not a valid unit type.\n");
+               }
+               
            //read user input for selecting territory to attack
            while(done == false){
                System.out.print("Enter the territory you would like to attack: ");
@@ -412,7 +470,9 @@ public class MainGame /*extends ApplicationAdapter*/ {
                }
            }
            done = false;
-           currentAttack.setDefender(defendingTerritory);
+           
+           
+           
            
            //read user input for selecting units to attack
            while(done == false){
@@ -479,16 +539,118 @@ public class MainGame /*extends ApplicationAdapter*/ {
    }
    
     /**
-    * A helper function to facilitate a single combat move
+    * A helper function to facilitate a single combat move for any single-type
+    * group of units
+    * Note that many units have more than one combat move per turn, this is not
+    * accounted for here
     * @param currentFaction is the faction moving their units
     * @param units are the unit type moving
     * @param numberOfUnits is the number of units moving
+    * //@param unitMoves is the number of territories a unit can move (fungible)
     * @param attackingTerritory is the territory the units are coming from
     * @param defendingTerritory is the territory the units are going to
     */
    public static void combatMove(int currentFaction, Unit units, int numberOfUnits, Territory attackingTerritory, Territory defendingTerritory){
-       
+       //if(unitMoves == 0) return;
+       String unitType = units.getType();
+       if(unitType == "Infantry"){
+           //add units to invaded territory
+           if(defendingTerritory.setInfantry(currentFaction, numberOfUnits)){
+               int remaining = attackingTerritory.getInfantry(currentFaction) - numberOfUnits;
+               //removes units from staging territory
+               if(attackingTerritory.setInfantry(currentFaction, remaining)){
+                   return;
+               }
+           }
+       }
+       else if(unitType == "Artillery"){
+           //add units to invaded territory
+           if(defendingTerritory.setArtillery(currentFaction, numberOfUnits)){
+               int remaining = attackingTerritory.getArtillery(currentFaction) - numberOfUnits;
+               //removes units from staging territory
+               if(attackingTerritory.setArtillery(currentFaction, remaining)){
+                   return;
+               }
+           }
+       }
+       else if(unitType == "Tank"){
+           //add units to invaded territory
+           if(defendingTerritory.setTanks(currentFaction, numberOfUnits)){
+               int remaining = attackingTerritory.getTanks(currentFaction) - numberOfUnits;
+               //removes units from staging territory
+               if(attackingTerritory.setTanks(currentFaction, remaining)){
+                   return;
+               }
+           }
+       }
+       else if(unitType == "Fighter"){
+           //add units to invaded territory
+           if(defendingTerritory.setFighters(currentFaction, numberOfUnits)){
+               int remaining = attackingTerritory.getFighters(currentFaction) - numberOfUnits;
+               //removes units from staging territory
+               if(attackingTerritory.setFighters(currentFaction, remaining)){
+                   return;
+               }
+           }
+       }
+       else if(unitType == "Bomber"){
+           //add units to invaded territory
+           if(defendingTerritory.setBombers(currentFaction, numberOfUnits)){
+               int remaining = attackingTerritory.getBombers(currentFaction) - numberOfUnits;
+               //removes units from staging territory
+               if(attackingTerritory.setBombers(currentFaction, remaining)){
+                   return;
+               }
+           }
+       }
+       else if(unitType == "Battleship"){
+           //add units to invaded territory
+           if(defendingTerritory.setBattleships(currentFaction, numberOfUnits)){
+               int remaining = attackingTerritory.getBattleships(currentFaction) - numberOfUnits;
+               //removes units from staging territory
+               if(attackingTerritory.setBattleships(currentFaction, remaining)){
+                   return;
+               }
+           }
+       }
+       else if(unitType == "Carrier"){
+           if(defendingTerritory.setAircraftCarriers(currentFaction, numberOfUnits)){
+               int remaining = attackingTerritory.getAircraftCarriers(currentFaction) - numberOfUnits;
+               //removes units from staging territory
+               if(attackingTerritory.setAircraftCarriers(currentFaction, remaining)){
+                   return;
+               }
+           }
+       }
+       else if(unitType == "Transport"){
+           if(defendingTerritory.setTransports(currentFaction, numberOfUnits)){
+               int remaining = attackingTerritory.getTransports(currentFaction) - numberOfUnits;
+               //removes units from staging territory
+               if(attackingTerritory.setTransports(currentFaction, remaining)){
+                   return;
+               }
+           }
+       }
+       else if(unitType == "Submarine"){
+           if(defendingTerritory.setSubmarines(currentFaction, numberOfUnits)){
+               int remaining = attackingTerritory.getSubmarines(currentFaction) - numberOfUnits;
+               //removes units from staging territory
+               if(attackingTerritory.setSubmarines(currentFaction, remaining)){
+                   return;
+               }
+           }
+       }
+       else if(unitType == "Destroyer"){
+           if(defendingTerritory.setDestroyers(currentFaction, numberOfUnits)){
+               int remaining = attackingTerritory.getDestroyers(currentFaction) - numberOfUnits;
+               //removes units from staging territory
+               if(attackingTerritory.setDestroyers(currentFaction, remaining)){
+                   return;
+               }
+           }
+       }
    }
+   
    
    /**
     * Initialize all territories to their default values and owners

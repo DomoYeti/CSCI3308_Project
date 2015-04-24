@@ -12,7 +12,8 @@ public class Unit{
    private static final int MAX_TYPE = 3;
    
    //Type refers to land/air/water unit
-   private int faction, cost, attack, defense, move, type;
+   private int faction, cost, attack, defense, move;
+   private String type;
    
    public Unit()
    {
@@ -40,7 +41,7 @@ public class Unit{
    {
       return this.move;
    }
-   public int getType()
+   public String getType()
    {
       return this.type;
    }
@@ -96,9 +97,13 @@ public class Unit{
       else
          return false;
    }
-   public boolean setType(int newType)
+   public boolean setType(String newType)
    {
-      if(newType > Unit.MIN_VALUE && newType <= Unit.MAX_TYPE)
+      if(newType == "Infantry" || newType == "Artillery" || newType == "Tank"
+            || newType == "Fighter" || newType == "Bomber"
+            || newType == "Battleship" || newType == "Carrier"
+            || newType == "Transport" || newType == "Submarine"
+            || newType == "Destroyer" || newType == "AA")
       {
          this.type = newType;
          return true;
