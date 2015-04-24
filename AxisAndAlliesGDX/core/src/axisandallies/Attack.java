@@ -1,5 +1,5 @@
 /*
- * This is the Attack subclass
+ * This is the Attack sub class
  * The class is a helper class to track the attack data generated during combat moves
  * All set functions are tuples of the form (attacker,defender)
  */

@@ -1,3 +1,7 @@
+/*
+ * This is the Unit class
+ * The class is a helper class to track the battle stats of units from all factions
+ */
 package axisandallies;
 
 public class Unit{

@@ -1,3 +1,11 @@
+/*
+ * This is the Territory class
+ * The class maintains all of the territories and their information, as well as 
+ * providing a map for units to exist within.
+ * Unit counts are set up as arrays, with a slot for each faction
+ * Available factions: 0 - Russia, 1 - Germany, 2 - UK, 3 - Japan, 4 - US
+ */
+
 package axisandallies;
 
 public class Territory{
@@ -107,45 +115,46 @@ public class Territory{
    {
       return this.hasAntiAircraft;
    }
-   public int[] getInfantry()
+   //get<units> functions require the faction number
+   public int getInfantry(int faction)
    {
-      return this.infantry;
+      return this.infantry[faction];
    }
-   public int[] getArtillery()
+   public int getArtillery(int faction)
    {
-      return this.artillery;
+      return this.artillery[faction];
    }
-   public int[] getTank()
+   public int getTank(int faction)
    {
-      return this.tank;
+      return this.tank[faction];
    }
-   public int[] getFighter()
+   public int getFighter(int faction)
    {
-      return this.fighter;
+      return this.fighter[faction];
    }
-   public int[] getBomber()
+   public int getBomber(int faction)
    {
-      return this.bomber;
+      return this.bomber[faction];
    }
-   public int[] getBattleship()
+   public int getBattleship(int faction)
    {
-      return this.battleship;
+      return this.battleship[faction];
    }
-   public int[] getAircraftCarrier()
+   public int getAircraftCarrier(int faction)
    {
-      return this.aircraftCarrier;
+      return this.aircraftCarrier[faction];
    }
-   public int[] getTransport()
+   public int getTransport(int faction)
    {
-      return this.transport;
+      return this.transport[faction];
    }
-   public int[] getSubmarine()
+   public int getSubmarine(int faction)
    {
-      return this.submarine;
+      return this.submarine[faction];
    }
-   public int[] getDestroyer()
+   public int getDestroyer(int faction)
    {
-      return this.destroyer;
+      return this.destroyer[faction];
    }
 	public boolean getIsLand()
 	{

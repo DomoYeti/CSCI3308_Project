@@ -350,16 +350,20 @@ public class MainGame /*extends ApplicationAdapter*/ {
    }
    
    public static void combatMoveAndCombat(int currentPlayer, int currentFaction){
-       Attack[] attackList = new Attack[MAX_TERRITORIES];
-       int numberOfAttacks = 0;
+       input = new Scanner(System.in); //reads input from users
        //Combat Move phase
        boolean concluded = false;
        while(concluded == false){
            //prepare a new attack
            Attack currentAttack = null;
            boolean done = false;
-           String attackerName;
-           String defenderName;
+           String attackerName = null;
+           String defenderName = null;
+           int attackerInfantry;
+           int attackerArtillery;
+           int attackerTanks;
+           int attackerFighter;
+           int attackerBomber;
            Territory attackingTerritory = null;
            Territory defendingTerritory = null;
            
@@ -403,13 +407,58 @@ public class MainGame /*extends ApplicationAdapter*/ {
            
            //read user input for selecting units to attack
            while(done == false){
-               
-               System.out.print("Enter the territory you would like to attack: ");
+               boolean complete = false;
+               //land attacking
+               if(attackingTerritory.getIsLand()){
+                   //check is land
+                   if(defendingTerritory.getIsLand()){
+                       //Infantry loop
+                       while(complete == false){
+                           //check is connected
+                           if(attackingTerritory.getIsConnected(defenderName)){
+                                System.out.print("How many Infantry would you like to send?: ");
+                                attackerInfantry = input.nextInt();
+                                if(attackerInfantry <= attackingTerritory.getInfantry(attackingTerritory.getFaction())){
+                                    if(attackerInfantry > 0){
+                                        defendingTerritory.setInfantry(attackingTerritory.getFaction(),attackerInfantry);
+                                        complete = true;
+                                    }
+                                    System.out.print("Not a valid number of Infantry.");
+                                }
+                                System.out.print("Not a valid number of Infantry.");
+                           }
+                           System.out.print("This territory is too far away for Infantry to attack!\n");
+                           complete = true;
+                       }
+                       //Artillery loop
+                       while(complete == false){
+                           //check is connected
+                           if(attackingTerritory.getIsConnected(defenderName)){
+                                System.out.print("How many Artillery would you like to send?: ");
+                                attackerArtillery = input.nextInt();
+                                if(attackerArtillery <= attackingTerritory.getArtillery(attackingTerritory.getFaction())){
+                                    if(attackerArtillery > 0){
+                                        defendingTerritory.setArtillery(attackingTerritory.getFaction(),attackerArtillery);
+                                        complete = true;
+                                    }
+                                    System.out.print("Not a valid number of Artillery.");
+                                }
+                                System.out.print("Not a valid number of Artillery.");
+                           }
+                           System.out.print("This territory is too far away for Artillery to attack!\n");
+                           complete = true;
+                       }
+                   }
+                   System.out.print("Ground troops cannot attack sea territories!\n");
+               }
+               //sea attacking
+               else{
+                   
+               }
+               System.out.print(": ");
            }
            
            //cleanup and packaging of Attack
-           attackList[numberOfAttacks] = currentAttack;
-           numberOfAttacks++;
        }
        
        //Combat Resolution phase
