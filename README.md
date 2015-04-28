@@ -33,3 +33,6 @@ Alternatively, you can prepend "http://htmlpreview.github.io/?" to the HTML refe
 
 ## Source Files
 Source files are located in [/AxisAndAlliesGDX/core/src/axisandallies/](https://github.com/DomoYeti/CSCI3308_Project/tree/master/AxisAndAlliesGDX/core/src/axisandallies)
+
+## Other Navigation
+The unintegrated art assets are stored in the top-level "art" folder.
