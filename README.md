@@ -1,7 +1,6 @@
 # CSCI3308_Project
 Project for CSCI 3308 in Spring 2015
-Created by Brandon Boylan-Peck, Eric Hardwick, Kevin Holligan, and Robby Kendl
-              shadow9692          FlintTD         kholligan         DomoYeti
+Created by Brandon Boylan-Peck (shadow9692), Eric Hardwick (FlintTD), Kevin Holligan (kholligan), and Robby Kendl (DomoYeti)
 
 A pass-and-play computerized version of Axis and Allies, 2004 Revised Edition.
 
@@ -21,14 +20,16 @@ To execute the program, run the jar file using the following command:
 ## Documentation
 PDF documentation is located in Documentation.pdf
 
-HTML documentation is located in /AxisAndAlliesGDX/core/doc/index.html
+HTML documentation is located in [/AxisAndAlliesGDX/core/doc/](https://github.com/DomoYeti/CSCI3308_Project/tree/master/AxisAndAlliesGDX/core/doc)<br>
 To view HTML documentation hosted in github, paste the following:
-https://github.com/DomoYeti/CSCI3308_Project/blob/master/AxisAndAlliesGDX/core/doc/index.html - [Link here](https://github.com/DomoYeti/CSCI3308_Project/blob/master/AxisAndAlliesGDX/core/doc/index.html)
+https://github.com/DomoYeti/CSCI3308_Project/blob/master/AxisAndAlliesGDX/core/doc/index.html
+<br>
 into the following website:
+<br>
 [http://htmlpreview.github.io/](http://htmlpreview.github.io/)
 
 Alternatively, you can prepend "http://htmlpreview.github.io/?" to the HTML reference: [Here](http://htmlpreview.github.io/?https://github.com/DomoYeti/CSCI3308_Project/blob/master/AxisAndAlliesGDX/core/doc/index.html)
 
 
 ## Source Files
-Source files are located in /AxisAndAlliesGDX/core/src/axisandallies/
+Source files are located in [/AxisAndAlliesGDX/core/src/axisandallies/](https://github.com/DomoYeti/CSCI3308_Project/tree/master/AxisAndAlliesGDX/core/src/axisandallies)
